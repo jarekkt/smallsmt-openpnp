@@ -17,17 +17,20 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton_2">
+      <item row="1" column="3">
+       <widget class="QPushButton" name="pushButtonDisconnect">
         <property name="text">
-         <string>PushButton</string>
+         <string>Disconnect</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton">
+      <item row="1" column="0">
+       <widget class="QComboBox" name="comboBoxSerialPorts"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="pushButtonConnect">
         <property name="text">
-         <string>PushButton</string>
+         <string>Connect</string>
         </property>
        </widget>
       </item>
@@ -44,7 +47,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -54,14 +57,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>pushButtonConnect</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>enableComm()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>362</x>
-     <y>34</y>
+     <x>260</x>
+     <y>56</y>
     </hint>
     <hint type="destinationlabel">
      <x>343</x>
@@ -69,8 +72,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonConnect</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>disableComm()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>216</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>27</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>enableComm()</slot>
+  <slot>disableComm()</slot>
  </slots>
 </ui>
