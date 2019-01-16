@@ -34,3 +34,5 @@
 # Directories
 docs/*
 references/*
+/source/smallsmt-openpnp-server/.idea
+/source/smallsmt-openpnp-server/__pycache__

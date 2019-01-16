@@ -2,9 +2,17 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtSerialPort import QSerialPortInfo
 from PyQt5 import uic
+import json
 
 import sys
 import openpnp
+import smallsmt
+
+
+class TestConfig:
+    def __init__(self):
+        self.p1 = 0
+        self.p2 = 1
 
 from mainwindow import Ui_MainWindow
 
@@ -17,7 +25,10 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
         self.openpnp = openpnp.OpenPnp()
+        self.smalsmt = smallsmt.SmallSmt()
         self.openpnp.openPnpLog.connect(self.logMessages)
+
+
 
     def enableComm(self):
         pass

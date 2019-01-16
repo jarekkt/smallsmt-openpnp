@@ -15,8 +15,7 @@ class CommSockets(QObject):
         self.ourSocket.bind(QHostAddress.LocalHost, self.SOCKET_NR_OUR);
 
         self.theirSocket = QUdpSocket(self)
-        self.ourSocket.
-        .connect(self.readPendingDatagrams)
+        self.ourSocket.readyRead.connect(self.readPendingDatagrams)
 
     def sendToOpenPnp(self,message):
         self.theirSocket.writeDatagram(message.encode('utf-8'),QHostAddress.LocalHost, self.SOCKET_NR_THEIR)
