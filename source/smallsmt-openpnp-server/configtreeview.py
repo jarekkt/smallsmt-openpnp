@@ -265,12 +265,23 @@ class ConfigModel(QtCore.QSortFilterProxyModel):
         self.setSourceModel(self.model)
 
     def putTreeData(self,myObject):
-        self.jp = jsonpickle.dumps(myObject)
+        self.jp = jsonpickle.encode(myObject)
         self.document = json.loads(self.jp)
         self.model.load(self.document)
 
     def getTreeData(self):
         json_dump = json.dumps(self.model.json())
-        return jsonpickle.loads(json_dump)
+        return jsonpickle.decode(json_dump)
 
 
+class ConfigSaver:
+    def __init__(self):
+        pass
+    def save(self,fileName,myObject):
+        with open(fileName, 'w') as outfile:
+            json_obj = jsonpickle.encode(myObject)
+            outfile.write(json_obj)
+    def load(self,fileName):
+        with open(fileName, 'r') as infile:
+            json_str = infile.read()
+            return jsonpickle.decode(json_str)

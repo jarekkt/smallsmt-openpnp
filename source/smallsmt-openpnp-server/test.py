@@ -47,3 +47,9 @@ if __name__ == '__main__':
 
     res = model.getTreeData()
     print(res)
+
+    cfg = configtreeview.ConfigSaver()
+    cfg.save("mycfg.json",res)
+
+    res_clone = cfg.load("mycfg.json")
+    print(res_clone)
