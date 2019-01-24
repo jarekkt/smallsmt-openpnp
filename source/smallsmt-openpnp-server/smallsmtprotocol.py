@@ -1,4 +1,37 @@
 from struct import *
+import binascii
+
+
+class SmallSmtCoords:
+    def add(self,delta):
+        self.X = self.X + delta.X
+        self.Y = self.Y + delta.Y
+        self.Z1 = self.Z1 + delta.Z1
+        self.Z2 = self.Z2 + delta.Z2
+        self.Z3 = self.Z3 + delta.Z3
+        self.Z4 = self.Z4 + delta.Z4
+        self.C1 = self.C1 + delta.C1
+        self.C2 = self.C2 + delta.C2
+        self.C3 = self.C3 + delta.C3
+        self.C4 = self.C4 + delta.C4
+        self.W1 = self.W1 + delta.W1
+        self.W2 = self.W2 + delta.W2
+        self.W3 = self.W3 + delta.W3
+
+    def __init__(self):
+        self.X = 0
+        self.Y = 0
+        self.Z1 = 0
+        self.Z2 = 0
+        self.Z3 = 0
+        self.Z4 = 0
+        self.C1 = 0
+        self.C2 = 0
+        self.C3 = 0
+        self.C4 = 0
+        self.W1 = 0
+        self.W2 = 0
+        self.W3 = 0
 
 
 class SmallSmtPacket:
@@ -8,18 +41,22 @@ class SmallSmtPacket:
     IDENTIFIER_RESPONSE_OK = 1
     IDENTIFIER_RESPONSE_FAULT = 0xFF
 
-
     def __init__(self):
         self.databytes = bytearray()
         self.length = 0
+        self.identifier = None
+        self.data_type = None
+        self.checksum = None
+        self.bytes = None
+        self.coordDelta = SmallSmtCoords()
 
-    def preparePacket(self, identifier, type, databytes):
-        self.identifer = identifier
-        self.type = type
+    def prepare_packet(self, identifier, data_type, databytes):
+        self.identifier = identifier
+        self.data_type = data_type
         self.databytes = databytes
-        self.encodePacket()
+        self.encode_packet()
 
-    def encodePacket(self):
+    def encode_packet(self):
         # Start character
         self.bytes.append(0xEE)
         self.length += 1
@@ -29,7 +66,7 @@ class SmallSmtPacket:
         # Data length
         self.bytes.append(len(self.databytes) + 2)
         # Data type
-        self.bytes.append(type)
+        self.bytes.append(self.data_type)
         # Data
         self.bytes.append(self.databytes)
         self.length += 2 + len(self.databytes)
@@ -50,7 +87,7 @@ class SmallSmtPacket:
         if message[0] != 0xEE:
             raise Exception("Wrong start character")
         self.identifier = message[1]
-        self.type = message[2]
+        self.data_type = message[2]
         self.length = len(message) - 7 # Note - no length field in messages from machine
         self.databytes = bytearray(self.length)
         for i in range(0, self.length):
@@ -63,7 +100,7 @@ class SmallSmtPacket:
             raise Exception("Wrong stop characters")
 
     def checksumCalc(self,array,startIdx,endIdx):
-        #Checksum by simple adding bytes
+        # Checksum by simple adding bytes
         chksum = 0
         for i in range(startIdx,endIdx):
             chksum += array[i];
@@ -110,6 +147,9 @@ class SmallSmtPacket:
         sign = 0
         result = pack("<L", int(val))
         return bytearray(result)
+
+    def toString(self):
+        return bytes.hex()
 
 
 class SmallSmtCmd__Online(SmallSmtPacket):
@@ -174,19 +214,19 @@ class SmallSmtCmd__Solenoid(SmallSmtPacket):
     # I/O control
     CMD_SOLENOID = 0x03
 
-    PORT_SOLENOID_VACUM1 = 0x01
-    PORT_SOLENOID_VACUM2 = 0x02
-    PORT_SOLENOID_VACUM3 = 0x03
-    PORT_SOLENOID_VACUM4 = 0x04
-    PORT_SOLENOID_WEST_FEEDER = 0x05
-    PORT_SOLENOID_NORTH_FEEDER = 0x06
-    PORT_SOLENOID_EAST_FEEDER = 0x07
-    PORT_SOLENOID_RESERVED1 = 0x08
-    PORT_SOLENOID_RESERVED2 = 0x09
-    PORT_SOLENOID_VIBRATION = 0x0A
-    PORT_SOLENOID_LIGHT1 = 0x0B
-    PORT_SOLENOID_LIGHT2 = 0x0C
-    PORT_SOLENOID_LIGHT3 = 0x0D
+    PORT_VACUUM1 = 0x01
+    PORT_VACUUM2 = 0x02
+    PORT_VACUUM3 = 0x03
+    PORT_VACUUM4 = 0x04
+    PORT_WEST_FEEDER = 0x05
+    PORT_NORTH_FEEDER = 0x06
+    PORT_EAST_FEEDER = 0x07
+    PORT_RESERVED1 = 0x08
+    PORT_RESERVED2 = 0x09
+    PORT_VIBRATION = 0x0A
+    PORT_LIGHT1 = 0x0B
+    PORT_LIGHT2 = 0x0C
+    PORT_LIGHT3 = 0x0D
 
     def __init__(self,port,enable):
         SmallSmtPacket.__init__(self)
@@ -204,8 +244,8 @@ class SmallSmtCmd__CameraMux(SmallSmtPacket):
     CMD_VISUAL = 0x04
 
     CAM_DOWN = 0x01
-    CAM_UP_SMALL = 0x02
-    CAM_UP_BIG = 0x03
+    CAM_UP_LEFT = 0x02
+    CAM_UP_RIGHT = 0x03
 
     def __init__(self,cameraId,brightness):
         SmallSmtPacket.__init__(self)
@@ -230,10 +270,10 @@ class SmallSmtCmd__ReadVacum(SmallSmtPacket):
     # Read vacuum
     CMD_VACUUM = 0x15
 
-    ID_NOZZLE1 = 0x01
-    ID_NOZZLE2 = 0x02
-    ID_NOZZLE3 = 0x03
-    ID_NOZZLE4 = 0x04
+    HEAD_NOZZLE1 = 0x01
+    HEAD_NOZZLE2 = 0x02
+    HEAD_NOZZLE3 = 0x03
+    HEAD_NOZZLE4 = 0x04
 
     def __init__(self, head_nozzle):
         SmallSmtPacket.__init__(self)
@@ -247,11 +287,11 @@ class SmallSmtCmd__ReadVacum(SmallSmtPacket):
 class SmallSmtCmd__SmtMode(SmallSmtPacket):
     CMD_SMT = 0x60
 
-    SMT_MANUAL = 0x00
-    SMT_BEGIN = 0x01
-    SMT_PAUSE = 0x02
-    SMT_RECOVER = 0x03
-    SMT_STOP = 0x04
+    MODE_MANUAL = 0x00
+    MODE_BEGIN = 0x01
+    MODE_PAUSE = 0x02
+    MODE_RECOVER = 0x03
+    MODE_STOP = 0x04
 
     def __init__(self, mode):
         SmallSmtPacket.__init__(self)
@@ -434,9 +474,9 @@ class SmallSmtCmd_Response(SmallSmtPacket):
     PANEL_BUTTON_PAUSE_RESUME = 0x32
     PANEL_BUTTON_STOP = 0x33
 
-    def __init__(self, incomingBytes):
+    def __init__(self, incoming_bytes):
         SmallSmtPacket.__init__(self)
-        self.decodePacket(incomingBytes)
+        self.decodePacket(incoming_bytes)
 
 
 

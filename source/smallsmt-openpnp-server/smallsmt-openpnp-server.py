@@ -1,59 +1,279 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QFileDialog, QMessageBox
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtSerialPort import QSerialPortInfo
-from PyQt5 import uic
-import json
+from optparse import OptionParser
 
 import sys
+import re
 import openpnp
 import smallsmt
-
-
-class TestConfig:
-    def __init__(self):
-        self.p1 = 0
-        self.p2 = 1
+import smallsmtprotocol
+import configtreeview
 
 from mainwindow import Ui_MainWindow
+from dialogplayground import Ui_DialogPlayground
+from editconfig import Ui_EditConfig
+from aboutdialog import Ui_AboutDialog
+
+class About(QDialog, Ui_AboutDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        Ui_AboutDialog.__init__(self)
+        self.setupUi(self)
 
 
-#Ui_MainWindow, QtBaseClass = uic.loadUiType("mainwindow.ui")
+class Configure(QDialog, Ui_EditConfig):
+
+    def __init__(self):
+        QDialog.__init__(self)
+        Ui_EditConfig.__init__(self)
+        self.setupUi(self)
+        self.configModel = configtreeview.ConfigModel()
+
+    def setData(self,obj):
+        self.configModel.putTreeData(obj)
+        self.treeView.setModel(self.configModel)
+
+    def getData(self):
+        return  self.configModel.getTreeData()
+
+
+class Playground(QDialog, Ui_DialogPlayground):
+
+    def executePacket(self,packet):
+        pass
+
+    def parseHexHint(self,text):
+        value_hex = re.match("\s*0x([a-fA-F0-9]*)\s*.*$", text)
+        if value_hex:
+            return int(value_hex.group(1),16)
+        else:
+            return 0
+
+    def pbBaseOnline(self):
+        packet = smallsmtprotocol.SmallSmtCmd__Online()
+        self.executePacket(packet)
+
+    def pbBaseReset(self):
+        axes=""
+        if self.xCB.isChecked():
+            axes += "X"
+        if self.yCB.isChecked():
+            axes += "Y"
+        if self.Z12CB.isChecked():
+            axes += "Z1"
+        if self.z34CB.isChecked():
+            axes += "Z2"
+        if self.w1CB.isChecked():
+            axes += "W1"
+        if self.w2CB.isChecked():
+            axes += "W2"
+        if self.w3CB.isChecked():
+            axes += "W3"
+        packet = smallsmtprotocol.SmallSmtCmd__Online(axes)
+        self.executePacket(packet)
+
+    def pbBaseResetValves(self):
+        if self.resetValueCB.currentIndex() == 0:
+            resetValue = self.rasetValveRawSB.value()
+        else:
+            resetValue = self.parseHexHint(self.resetValueCB.currentText())
+        packet = smallsmtprotocol.SmallSmtCmd__ResetValves(resetValue)
+        self.executePacket(packet)
+
+    def pbBaseSolenoid(self):
+        if self.solenoidC.currentIndex() == 0:
+            ioValue = self.solenoidSB.value()
+        else:
+            ioValue = self.parseHexHint(self.solenoidCB.currentText())
+        ioSet = self.solenoidEnableCB.isChecked()
+        packet = smallsmtprotocol.SmallSmtCmd__Solenoid(ioValue,ioSet)
+        self.executePacket(packet)
+
+    def pbBaseCamera(self):
+        camIdx = self.parseHexHint(self.camCBX.currentText())
+        camBrightness = self.brightnessSX.value()
+        packet = smallsmtprotocol.SmallSmtCmd__CameraMux(camIdx,camBrightness)
+        self.executePacket(packet)
+
+    def pbBaseSpeedCoeff(self):
+        speedCoeff = self.speedSX.value()
+        packet = smallsmtprotocol.SmallSmtCmd__SpeedCoefficient(speedCoeff)
+        self.executePacket(packet)
+
+    def pbBaseReadVacuum(self):
+        vacIdx = self.parseHexHint(self.readVacuumCBX.currentText())
+        packet = smallsmtprotocol.SmallSmtCmd__ReadVacum(vacIdx)
+        self.executePacket(packet)
+
+    def pbBaseSmtMode(self):
+        vacIdx = self.parseHexHint(self.smtModeCBX.currentText())
+        packet = smallsmtprotocol.SmallSmtCmd__SmtMode(vacIdx)
+        self.executePacket(packet)
+
+    def pbMoveAxis(self):
+        steps = self.moveSteps.value()
+        startSpeed = self.moveStartSpeed.value()
+        runSpeed = self.moveRunSpeed.value()
+        motor = self.parseHexHint(self.buttonGroup.checkedButton().text())
+        packet = smallsmtprotocol.SmallSmtCmd__Move(motor,steps,startSpeed,runSpeed)
+        self.executePacket(packet)
+        pass
+
+    def pbHeadMove(self):
+        stepsX = self.hmStepsX.value()
+        startSpeedX = self.hmSsX.value()
+        runSpeedX = self.hmRsX.value()
+        stepsY= self.hmStepsY.value()
+        startSpeedY = self.hmSsY.value()
+        runSpeedY= self.hmRsY.value()
+        stepsA1 = self.hmStepsA1.value()
+        startSpeedA1 = self.hmSsA1.value()
+        runSpeedA1= self.hmRsA1.value()
+        stepsA2 = self.hmStepsA2.value()
+        startSpeedA2= self.hmSsA2.value()
+        runSpeedA2= self.hmRsA2.value()
+        stepsA3= self.hmStepsA3.value()
+        startSpeedA3= self.hmSsA3.value()
+        runSpeedA3= self.hmRsA3.value()
+        stepsA4= self.hmStepsA4.value()
+        startSpeedA4= self.hmSsA4.value()
+        runSpeedA4= self.hmRsA4.value()
+        packet = smallsmtprotocol.SmallSmtCmd__MultiMove(
+            stepsX, startSpeedX, runSpeedX,
+            stepsY, startSpeedY, runSpeedY,
+            stepsA1, startSpeedA1, runSpeedA1,
+            stepsA2, startSpeedA2, runSpeedA2,
+            stepsA3, startSpeedA3, runSpeedA3,
+            stepsA4, startSpeedA4, runSpeedA4)
+        self.executePacket(packet)
+
+    def pbFeeder(self):
+        pass
+
+    def pbClFeeder(self):
+        pass
+
+    def pbPick(self):
+        pass
+
+    def pbPlace(self):
+        pass
+
+    def __init__(self):
+        QDialog.__init__(self)
+        Ui_DialogPlayground.__init__(self)
+        self.setupUi(self)
+
 
 class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
+
     def __init__(self):
         QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        self.openpnp = openpnp.OpenPnp()
-        self.smalsmt = smallsmt.SmallSmt()
-        self.openpnp.openPnpLog.connect(self.logMessages)
-
-
-
-    def enableComm(self):
-        pass
-
-    def disableComm(self):
-        pass
+        self.openPnp = openpnp.OpenPnp()
+        self.openPnp.openPnpLog.connect(self.logMessages)
+        self.smallSmtMachine = smallsmt.SmallSmtMachine()
+        self.smallSmtMachine.smallSmtLog.connect(self.logMessages)
+        self.listPorts()
 
     def listPorts(self):
         available_ports = QSerialPortInfo.availablePorts()
         self.comboBoxSerialPorts.clear()
         for port in available_ports:
-            self.comboBoxSerialPorts.addItems(port.portName())
+            self.comboBoxSerialPorts.addItem(port.portName())
+
+    def updateFileNames(self):
+        self.fileNameGlobal = self.machineTypesCB.currentText() + ".json"
+        self.fileNameCalibrationFile = self.fnameLE.text()
+
+    def configure(self,machineType,machineConfig,machinePort,machineStart):
+        self.reloadSettings()
+
+
+
+
 
     @pyqtSlot(str)
     def logMessages(self,msg):
+
         self.loggerWindow.appendPlainText(msg)
 
+    @pyqtSlot()
+    def enableComm(self):
 
+        pass
+
+    @pyqtSlot()
+    def configGlobal(self):
+        configDia = Configure()
+        configDia.setData(self.smallSmtMachine.globalConfig)
+        if configDia.exec() == QDialog.Accepted :
+            self.smallSmtMachine.globalConfig = configDia.getData()
+
+    @pyqtSlot()
+    def configMachine(self):
+        configDia = Configure()
+        configDia.setData(self.smallSmtMachine.machineConfig)
+        if configDia.exec() == QDialog.Accepted :
+            self.smallSmtMachine.machineConfig = configDia.getData()
+
+    @pyqtSlot()
+    def reloadSettings(self):
+        self.updateFileNames()
+        self.smallSmtMachine.loadMachineData(self.fileNameGlobal,self.fileNameCalibrationFile)
+
+    @pyqtSlot()
+    def saveSettings(self):
+        self.updateFileNames()
+        if self.smallSmtMachine.is_valid(self.fileNameCalibrationFile)==False :
+            QMessageBox.warning(self, "Warning", "The config file name is not valid - fix it!")
+        else:
+            self.smallSmtMachine.saveGlobalMachineData(self.fileNameGlobal)
+            self.smallSmtMachine.saveCalibrationMachineData(self.fileNameCalibrationFile)
+
+
+    @pyqtSlot()
+    def playground(self):
+        configPlay = Playground()
+        configPlay.exec()
+
+
+    @pyqtSlot()
+    def selectConfig(self):
+        dlg = QFileDialog()
+        dlg.setNameFilters(["JSON files (*.json)","All files (*.*)"])
+        ok = dlg.exec()
+        if ok != 0 :
+            self.fnameLE.setText(dlg.selectedFiles().pop())
+
+
+    @pyqtSlot()
+    def refreshPort(self):
+        self.listPorts()
+
+    @pyqtSlot()
+    def about(self):
+        aboutDia = About()
+        aboutDia.exec()
+        pass
 
 
 def main():
-    app = QApplication(sys.argv)  # A new instance of QApplication
+    parser = OptionParser()
+
+    parser.add_option('-t', help='Machine type', dest='machineType',action ='store')
+    parser.add_option('-c', help='Machine config file', dest='machineConfig', action='store')
+    parser.add_option('-p', help='Controller port name', dest='machineSerialPort', action='store')
+    parser.add_option('-s', help='Connect to port and start server', dest='machineStart', default = False, action = 'store_true')
+    (options, args) = parser.parse_args(sys.argv)
+
+    app = QApplication(sys.argv)
     form = SmallSmtDriverApp()
     form.show()
-    app.exec_()
+    form.configure(options.machineType,options.machineConfig,options.machineSerialPort,options.machineStart)
+    app.exec()
 
 
 if __name__ == '__main__':

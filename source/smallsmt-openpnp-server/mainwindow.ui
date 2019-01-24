@@ -17,20 +17,71 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="3">
-       <widget class="QPushButton" name="pushButtonDisconnect">
-        <property name="text">
-         <string>Disconnect</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QComboBox" name="comboBoxSerialPorts"/>
-      </item>
-      <item row="1" column="1">
+      <item row="1" column="4">
        <widget class="QPushButton" name="pushButtonConnect">
         <property name="text">
          <string>Connect</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QComboBox" name="comboBoxSerialPorts"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLineEdit" name="fnameLE">
+        <property name="text">
+         <string>vp-calibration.json</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QComboBox" name="machineTypesCB">
+        <item>
+         <property name="text">
+          <string>VP-2000S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>VP-2500DP</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>VP-2500HP</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>VP-2800HP</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Machine type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="selectConfgiPB">
+        <property name="text">
+         <string>Select config file</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="refreshPortPB">
+        <property name="text">
+         <string>Refresh port</string>
         </property>
        </widget>
       </item>
@@ -47,11 +98,70 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuConfiguration">
+    <property name="title">
+     <string>Configuration</string>
+    </property>
+    <addaction name="actionGlobal_settings"/>
+    <addaction name="actionMachine_settings"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionReload_Settings_from_File"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuTesting">
+    <property name="title">
+     <string>Testing</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionPlayground"/>
+   </widget>
+   <addaction name="menuConfiguration"/>
+   <addaction name="menuTesting"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionGlobal_settings">
+   <property name="text">
+    <string>Edit global settings</string>
+   </property>
+  </action>
+  <action name="actionMachine_settings">
+   <property name="text">
+    <string>Edit machine settings</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Settings</string>
+   </property>
+  </action>
+  <action name="actionPlayground">
+   <property name="text">
+    <string>Playground</string>
+   </property>
+  </action>
+  <action name="actionReload_Settings_from_File">
+   <property name="text">
+    <string>Reload Settings from File</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
@@ -63,8 +173,8 @@
    <slot>enableComm()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>56</y>
+     <x>389</x>
+     <y>82</y>
     </hint>
     <hint type="destinationlabel">
      <x>343</x>
@@ -73,24 +183,143 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButtonConnect</sender>
-   <signal>clicked()</signal>
+   <sender>actionGlobal_settings</sender>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>disableComm()</slot>
+   <slot>configGlobal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>216</x>
-     <y>42</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>207</x>
-     <y>27</y>
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMachine_settings</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>configMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAbout</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>about()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectConfgiPB</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>selectConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>54</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshPortPB</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>refreshPort()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>67</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>6</x>
+     <y>71</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPlayground</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>playground()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionReload_Settings_from_File</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>reloadSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <slot>enableComm()</slot>
-  <slot>disableComm()</slot>
+  <slot>about()</slot>
+  <slot>configMachine()</slot>
+  <slot>configGlobal()</slot>
+  <slot>selectConfig()</slot>
+  <slot>refreshPort()</slot>
+  <slot>playground()</slot>
+  <slot>saveSettings()</slot>
+  <slot>reloadSettings()</slot>
  </slots>
 </ui>

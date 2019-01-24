@@ -6,7 +6,9 @@ from PyQt5 import QtWidgets, QtCore
 import jsonpickle
 import json
 import re
-
+import shutil
+import datetime
+import os
 
 class QJsonTreeItem(object):
     def __init__(self, parent=None):
@@ -140,7 +142,6 @@ class QJsonModel(QtCore.QAbstractItemModel):
                 # Remove our type formatting
                 fkey = re.sub(r"_.*", "", item.key)
                 return fkey
-
             if index.column() == 1:
                 return item.value
         if role == QtCore.Qt.UserRole:
@@ -157,7 +158,19 @@ class QJsonModel(QtCore.QAbstractItemModel):
         if role == QtCore.Qt.EditRole:
             if index.column() == 1:
                 item = index.internalPointer()
-                item.value = str(value)
+
+                key_idx = index.siblingAtColumn(index.column() - 1)
+                key_val = key_idx.data(QtCore.Qt.UserRole)
+                key_type = re.match("(?:.*)_(.*)(\\d)$", key_val)
+
+                if key_type:
+                    if key_type.group(1) == "f":
+                        item.value = float(value)
+                    else:
+                        item.value = str(value)
+                else:
+                    item.value = str(value)
+
                 self.dataChanged.emit(index, index, [QtCore.Qt.EditRole])
                 return True
 
@@ -243,10 +256,17 @@ class Delegate(QtWidgets.QStyledItemDelegate):
     def createEditor(self, parent, option, index):
         key_idx = index.siblingAtColumn(index.column()-1)
         key_val = key_idx.data(QtCore.Qt.UserRole)
-        key_type = re.match("(?:.*)_(.*)",key_val)
+        key_type = re.match("(?:.*)_(.*)(\\d)$",key_val)
 
-        if key_type == "f":
-            editor = QtWidgets.QDoubleSpinBox(parent)
+        if key_type:
+            if key_type.group(1) == "f":
+                editor = QtWidgets.QDoubleSpinBox(parent)
+                if key_type.group(2):
+                    editor.setDecimals(int(key_type.group(2)))
+                else:
+                    editor.setDecimals(4)
+            else:
+                editor = QtWidgets.QLineEdit(parent)
         else:
             editor = QtWidgets.QLineEdit(parent)
         return editor
@@ -265,11 +285,15 @@ class ConfigModel(QtCore.QSortFilterProxyModel):
         self.setSourceModel(self.model)
 
     def putTreeData(self,myObject):
+        jsonpickle.set_preferred_backend('json')
+        jsonpickle.set_encoder_options('json', sort_keys=False, indent=4)
         self.jp = jsonpickle.encode(myObject)
         self.document = json.loads(self.jp)
         self.model.load(self.document)
 
     def getTreeData(self):
+        jsonpickle.set_preferred_backend('json')
+        jsonpickle.set_encoder_options('jason', sort_keys=False, indent=4)
         json_dump = json.dumps(self.model.json())
         return jsonpickle.decode(json_dump)
 
@@ -277,11 +301,33 @@ class ConfigModel(QtCore.QSortFilterProxyModel):
 class ConfigSaver:
     def __init__(self):
         pass
-    def save(self,fileName,myObject):
+    def save(self,fileName,myObject,make_backup=False):
+        if make_backup == True :
+            try:
+                shutil.copy(fileName, fileName + "." + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M."))
+            except:
+                pass # This is only best efort case. The file may not exist at all
+        jsonpickle.set_preferred_backend('json')
+        jsonpickle.set_encoder_options('json', sort_keys=False, indent=4)
         with open(fileName, 'w') as outfile:
             json_obj = jsonpickle.encode(myObject)
             outfile.write(json_obj)
     def load(self,fileName):
+        jsonpickle.set_preferred_backend('json')
         with open(fileName, 'r') as infile:
             json_str = infile.read()
             return jsonpickle.decode(json_str)
+
+    def is_valid(self,fname):
+        valid = False
+
+        if os.path.exists(fname):
+            valid = True
+        else:
+            try:
+                f = open(fname, 'w')
+                f.close()
+                valid = True
+            except OSError:
+                pass
+        return valid

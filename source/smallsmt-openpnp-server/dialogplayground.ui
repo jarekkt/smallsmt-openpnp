@@ -1,0 +1,1596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogPlayground</class>
+ <widget class="QDialog" name="DialogPlayground">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>586</width>
+    <height>589</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Playground</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabPlayground">
+     <property name="currentIndex">
+      <number>3</number>
+     </property>
+     <widget class="QWidget" name="tabBase">
+      <attribute name="title">
+       <string>Base</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="5" column="1" colspan="2">
+        <widget class="QComboBox" name="camCBX">
+         <item>
+          <property name="text">
+           <string>0x01 CAM_DOWN</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x02 CAM_UP_LEFT</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 CAM_UP_RIGHT</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="7">
+        <widget class="QCheckBox" name="w3CB">
+         <property name="text">
+          <string>W3</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QCheckBox" name="Z12CB">
+         <property name="text">
+          <string>Z1/2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QPushButton" name="cameraButton">
+         <property name="text">
+          <string>Camera</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QSpinBox" name="speedSX">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>127</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QCheckBox" name="xCB">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" colspan="2">
+        <widget class="QComboBox" name="resetValueCBX">
+         <item>
+          <property name="text">
+           <string>use raw value</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x06 VALVE_NFEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x05 VALVE_WFEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x07 VALVE_EFEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x0A VALVE_SFEEDER</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="resetValvesButton">
+         <property name="text">
+          <string>Reset Valves</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="QCheckBox" name="w2CB">
+         <property name="text">
+          <string>W2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QPushButton" name="SpeedCoeffButton">
+         <property name="text">
+          <string>SpeedCoeff</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QPushButton" name="readVacuumButton">
+         <property name="text">
+          <string>Read Vacuum</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="resetButton">
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="QCheckBox" name="w1CB">
+         <property name="text">
+          <string>W1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="onlineButton">
+         <property name="text">
+          <string>Online</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QPushButton" name="solenoidButton">
+         <property name="text">
+          <string>Solenoid</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1" colspan="2">
+        <widget class="QComboBox" name="readVacuumCBX">
+         <item>
+          <property name="text">
+           <string>0x01 NOZZLE1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x02 NOZZLE2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 NOZZLE3</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x04 NOZZLE4</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="4">
+        <widget class="QSpinBox" name="brightnessSX">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>127</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QCheckBox" name="z34CB">
+         <property name="text">
+          <string>Z2/3</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QCheckBox" name="yCB">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QSpinBox" name="rasetValveRawSB"/>
+       </item>
+       <item row="3" column="1" colspan="2">
+        <widget class="QComboBox" name="solenoidCBX">
+         <item>
+          <property name="text">
+           <string>use raw value</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x01 VACUUM1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x02 VACUUM2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 VACUUM3</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x04 VACUUM4</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x05 WEST_FEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x06 NORTH_FEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x07 EAST_FEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x0A VIBRATION</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x0B LIGHT1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x0C LIGHT2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x0D LIGHT3</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Brightness(B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QSpinBox" name="solenoidSB"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QPushButton" name="smtModeButton">
+         <property name="text">
+          <string>SMT Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1" colspan="2">
+        <widget class="QComboBox" name="smtModeCBX">
+         <item>
+          <property name="text">
+           <string>0x00 MANUAL</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x01 BEGIN</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x02 PAUSE</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 RECOVER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x04 STOP</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QCheckBox" name="solenoidEnableCB">
+         <property name="text">
+          <string>Enable</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabMove">
+      <attribute name="title">
+       <string>Move</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Steps</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="moveSteps">
+             <property name="minimum">
+              <number>-1000000</number>
+             </property>
+             <property name="maximum">
+              <number>1000000</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Start Speed(B)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="moveStartSpeed">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Run Speed(B)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="moveRunSpeed">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="moveButton">
+           <property name="text">
+            <string>Move Axis</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="moveAxesGB">
+         <property name="title">
+          <string>Axes</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="7" column="0">
+           <widget class="QRadioButton" name="rb7">
+            <property name="text">
+             <string>0x04 A1</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QRadioButton" name="rb6">
+            <property name="text">
+             <string>0x03 Z4</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QRadioButton" name="rb2">
+            <property name="text">
+             <string>0x01 Y</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QRadioButton" name="rb10">
+            <property name="text">
+             <string>0x07 A4</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QRadioButton" name="rb9">
+            <property name="text">
+             <string>0x06 A3</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QRadioButton" name="radioButton_2">
+            <property name="text">
+             <string>0x08 WEST_FEEDER</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QRadioButton" name="rb8">
+            <property name="text">
+             <string>0x05 A2</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QRadioButton" name="rb1">
+            <property name="text">
+             <string>0x00 X</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QRadioButton" name="rb3">
+            <property name="text">
+             <string>0x02 Z1</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QRadioButton" name="rb5">
+            <property name="text">
+             <string>0x03 Z3</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="13" column="0">
+           <widget class="QRadioButton" name="radioButton_3">
+            <property name="text">
+             <string>0x09 NORTH_FEEDER</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QRadioButton" name="rb4">
+            <property name="text">
+             <string>0x02 Z2</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="14" column="0">
+           <widget class="QRadioButton" name="radioButton">
+            <property name="text">
+             <string>0x0A EAST_FEEDER</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">buttonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabHeadMove">
+      <attribute name="title">
+       <string>Head move</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,4,4,4">
+       <item row="4" column="3">
+        <widget class="QSpinBox" name="hmRsY">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>A1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="3">
+        <widget class="QSpinBox" name="hmRsA3">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Axis</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QSpinBox" name="hmRsX">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QSpinBox" name="hmSsY">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Start Speed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>A4</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QPushButton" name="HeadMoveButton">
+         <property name="text">
+          <string>Move Head</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QSpinBox" name="hmStepsA2">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="3">
+        <widget class="QSpinBox" name="hmRsA4">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QSpinBox" name="hmSsX">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="2">
+        <widget class="QSpinBox" name="hmSsA4">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QSpinBox" name="hmStepsY">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Run Speed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>A3</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="3">
+        <widget class="QSpinBox" name="hmRsA2">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QSpinBox" name="hmSsA1">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QSpinBox" name="hmStepsA3">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QSpinBox" name="hmStepsA1">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>A2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="hmStepsX">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QSpinBox" name="hmStepsA4">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QSpinBox" name="hmRsA1">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QSpinBox" name="hmSsA2">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Steps</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QSpinBox" name="hmSsA3">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabFeeders">
+      <attribute name="title">
+       <string>Feeders</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Open Length (S)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="feedersCBX">
+         <item>
+          <property name="text">
+           <string>0x01 WEST_FEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x02 NORTH_FEEDER</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 EAST_FEEDER</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QSpinBox" name="fOl">
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="feederButton">
+         <property name="text">
+          <string>Feeder</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QSpinBox" name="fRs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="2">
+        <widget class="QSpinBox" name="flast">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLabel" name="label_22">
+         <property name="text">
+          <string>Feed time (S)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QLabel" name="label_26">
+         <property name="text">
+          <string>Feed time [us]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>Steps</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="2">
+        <widget class="QSpinBox" name="fFt">
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QSpinBox" name="ocRs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLabel" name="label_21">
+         <property name="text">
+          <string>Open Close Speed Run (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="fSs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QSpinBox" name="fCl">
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>Startup Speed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>Open Close Speed Start (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QSpinBox" name="ocSs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="2">
+        <widget class="QSpinBox" name="fCli">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="2">
+        <widget class="QSpinBox" name="fClt">
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="fSteps">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QLabel" name="label_25">
+         <property name="text">
+          <string>Feeder Index</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>Push Cunt (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QPushButton" name="yamahaFeederButton">
+         <property name="text">
+          <string>CL Feeder</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_19">
+         <property name="text">
+          <string>Closed Length (S)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>Run Speed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QLabel" name="label_24">
+         <property name="text">
+          <string>?</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="2">
+        <widget class="QSpinBox" name="fPc">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Pick&amp;&amp;Place</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="5" column="2">
+        <widget class="QSpinBox" name="piN">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QPushButton" name="placeButton">
+         <property name="text">
+          <string>Place</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QLabel" name="label_35">
+         <property name="text">
+          <string>Run SPeed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <widget class="QLabel" name="label_36">
+         <property name="text">
+          <string>Z Steps Vacuum Shut</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QSpinBox" name="piSs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLabel" name="label_29">
+         <property name="text">
+          <string>Vacuum Test Level (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_30">
+         <property name="text">
+          <string>Nozzle Nr (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_31">
+         <property name="text">
+          <string>Run Speed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QComboBox" name="placeAxeCBX">
+         <item>
+          <property name="text">
+           <string>0x02 Z1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x02 Z2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 Z3</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x04 Z4</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QSpinBox" name="piRs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pickButton">
+         <property name="text">
+          <string>Pick</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_32">
+         <property name="text">
+          <string>Start Speed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QLabel" name="label_33">
+         <property name="text">
+          <string>Z steps</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="pickAxeCBX">
+         <item>
+          <property name="text">
+           <string>0x02 Z1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x02 Z2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 Z3</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x03 Z4</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QLabel" name="label_34">
+         <property name="text">
+          <string>Start Speed (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QSpinBox" name="piVtl">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QSpinBox" name="piPd">
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_27">
+         <property name="text">
+          <string>Z steps</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="1">
+        <widget class="QLabel" name="label_37">
+         <property name="text">
+          <string>Put Delay (S)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="piZ">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="label_28">
+         <property name="text">
+          <string>Put Delay (S)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="1">
+        <widget class="QLabel" name="label_38">
+         <property name="text">
+          <string>Vacuum Test Level (B)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="2">
+        <widget class="QSpinBox" name="plZ">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="2">
+        <widget class="QSpinBox" name="plSs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="2">
+        <widget class="QSpinBox" name="plRs">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="2">
+        <widget class="QSpinBox" name="plZsvs">
+         <property name="minimum">
+          <number>-1000000</number>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="2">
+        <widget class="QSpinBox" name="plPd">
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="2">
+        <widget class="QSpinBox" name="plVtl">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="label_40">
+       <property name="text">
+        <string>Frame &gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="frameOutLE"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="label_39">
+       <property name="text">
+        <string>Frame &lt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="frameInLE"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="plainTextEdit"/>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>579</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>325</x>
+     <y>579</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>onlineButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseOnline()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>148</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resetButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseReset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resetValvesButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseResetValves()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>140</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>solenoidButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseSolenoid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>42</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cameraButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseCamera()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>234</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SpeedCoeffButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseSpeedCoeff()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>278</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>readVacuumButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseReadVacuum()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>58</x>
+     <y>335</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>323</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>smtModeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbBaseSmtMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>376</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>368</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbMoveAxis()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>62</x>
+     <y>390</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>HeadMoveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbHeadMove()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>40</x>
+     <y>400</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>420</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>feederButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbFeeder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>113</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>50</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yamahaFeederButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbClFeeder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>40</x>
+     <y>356</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>8</x>
+     <y>9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pickButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbPick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>11</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>placeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogPlayground</receiver>
+   <slot>pbPlace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>46</x>
+     <y>243</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>403</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>pbBaseOnline()</slot>
+  <slot>pbBaseReset()</slot>
+  <slot>pbBaseResetValves()</slot>
+  <slot>pbBaseSolenoid()</slot>
+  <slot>pbBaseCamera()</slot>
+  <slot>pbBaseSpeedCoeff()</slot>
+  <slot>pbBaseReadVacuum()</slot>
+  <slot>pbBaseSmtMode()</slot>
+  <slot>pbMoveAxis()</slot>
+  <slot>pbHeadMove()</slot>
+  <slot>pbFeeder()</slot>
+  <slot>pbClFeeder()</slot>
+  <slot>pbPick()</slot>
+  <slot>pbPlace()</slot>
+ </slots>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
+</ui>
