@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabPlayground">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabBase">
       <attribute name="title">
@@ -908,13 +908,6 @@
         <widget class="QLabel" name="label_21">
          <property name="text">
           <string>Open Close Speed Run (B)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QSpinBox" name="fSs">
-         <property name="maximum">
-          <number>255</number>
          </property>
         </widget>
        </item>

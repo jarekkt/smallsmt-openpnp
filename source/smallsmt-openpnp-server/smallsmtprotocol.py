@@ -41,6 +41,7 @@ class SmallSmtPacket:
     IDENTIFIER_RESPONSE_OK = 1
     IDENTIFIER_RESPONSE_FAULT = 0xFF
 
+
     def __init__(self):
         self.databytes = bytearray()
         self.length = 0
@@ -50,7 +51,7 @@ class SmallSmtPacket:
         self.bytes = None
         self.coordDelta = SmallSmtCoords()
 
-    def prepare_packet(self, identifier, data_type, databytes):
+    def preparePacket(self, identifier, data_type, databytes):
         self.identifier = identifier
         self.data_type = data_type
         self.databytes = databytes
@@ -58,18 +59,26 @@ class SmallSmtPacket:
 
     def encode_packet(self):
         # Start character
+        self.bytes = bytearray()
+
         self.bytes.append(0xEE)
         self.length += 1
         # Message identifier
         self.bytes.append(self.identifier)
         self.length += 1
         # Data length
-        self.bytes.append(len(self.databytes) + 2)
+        if self.databytes != None:
+            self.bytes.append(len(self.databytes) + 2)
+        else:
+            self.bytes.append(2)
         # Data type
         self.bytes.append(self.data_type)
         # Data
-        self.bytes.append(self.databytes)
-        self.length += 2 + len(self.databytes)
+        if self.databytes != None:
+            self.bytes += self.databytes
+            self.length += 2 + len(self.databytes)
+        else:
+            self.length += 2
         # Checksum
         self.checksum = self.checksumCalc(self.bytes, 2,self.length)
         self.bytes.append(self.checksum)
@@ -106,14 +115,6 @@ class SmallSmtPacket:
             chksum += array[i];
         return (chksum & 0xff)
 
-    def convertRange0_100ToByte(self,range0_100,min=1,max=255):
-        value = (range0_100 * 255)/100
-        if value < min:
-            value = min
-        elif value > max:
-            value = max
-        return int(value)
-
     def convertSteps(self,steps):
         # converts to unsigned 31 bit int, highest bit has the sign (step direction)
         sign = 0
@@ -149,7 +150,16 @@ class SmallSmtPacket:
         return bytearray(result)
 
     def toString(self):
-        return bytes.hex()
+        idx = 0
+        rep = ""
+        for ii in range(0,len(self.view)):
+            if idx !=0:
+                rep = rep + ":"
+            for jj in range(0,self.view[ii]):
+                rep = rep + str.format("{:02X}",self.bytes[idx])
+                idx = idx + 1
+
+        return rep
 
 
 class SmallSmtCmd__Online(SmallSmtPacket):
@@ -158,6 +168,8 @@ class SmallSmtCmd__Online(SmallSmtPacket):
 
     def __init__(self):
         SmallSmtPacket.__init__(self)
+        self.name = "ONLINE"
+        self.view = [1,1,1,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION,self.CMD_ONLINE,None)
 
 
@@ -167,6 +179,7 @@ class SmallSmtCmd__Reset(SmallSmtPacket):
 
     def __init__(self,axes):
         SmallSmtPacket.__init__(self)
+        self.name = "RESET"
         databytes = bytearray(14)
         marker = 0x06  # According to doc anything non-zero
         if axes.find("X"):
@@ -190,6 +203,7 @@ class SmallSmtCmd__Reset(SmallSmtPacket):
         if axes.find("W3"):
             databytes[12] = marker
             databytes[13] = marker
+        self.view = [1,1,1,2,2,2,2,2,2,2,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION,self.CMD_RESET,databytes)
 
 class SmallSmtCmd__ResetValves(SmallSmtPacket):
@@ -203,11 +217,13 @@ class SmallSmtCmd__ResetValves(SmallSmtPacket):
 
     def __init__(self, valve):
         SmallSmtPacket.__init__(self)
+        self.name = "RESET VALVES"
         databytes = bytearray()
         databytes.append(valve)
         databytes.append(0x00)
         databytes.append(0x00)
         databytes.append(0x64)
+        self.view = [1, 1,1,1, 3, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_RESET, databytes)
 
 class SmallSmtCmd__Solenoid(SmallSmtPacket):
@@ -233,9 +249,10 @@ class SmallSmtCmd__Solenoid(SmallSmtPacket):
         databytes = bytearray(2)
         databytes[0] = port
         if enable != 0:
-            databytes[0] = 1
+            databytes[1] = 1
         else:
-            databytes[0] = 0
+            databytes[1] = 0
+        self.view = [1, 1,1,1, 1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_SOLENOID, databytes)
 
 
@@ -249,9 +266,11 @@ class SmallSmtCmd__CameraMux(SmallSmtPacket):
 
     def __init__(self,cameraId,brightness):
         SmallSmtPacket.__init__(self)
+        self.name = "CAMERA MUX"
         databytes = bytearray(2)
         databytes[0] = cameraId
-        databytes[1] = self.convertRange0_100ToByte(brightness)
+        databytes[1] = brightness
+        self.view = [1, 1,1,1, 1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_VISUAL, databytes)
 
 
@@ -261,8 +280,10 @@ class SmallSmtCmd__SpeedCoefficient(SmallSmtPacket):
 
     def __init__(self,speedVal):
         SmallSmtPacket.__init__(self)
+        self.name = "SPEED COEF"
         databytes = bytearray(1)
         databytes[0] = speedVal
+        self.view = [1, 1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_SPEED, databytes)
 
 
@@ -277,8 +298,10 @@ class SmallSmtCmd__ReadVacum(SmallSmtPacket):
 
     def __init__(self, head_nozzle):
         SmallSmtPacket.__init__(self)
+        self.name = "READ VACUUM"
         databytes = bytearray(1)
         databytes[0] = head_nozzle
+        self.view = [1,1,1, 1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_VACUUM, databytes)
 
 
@@ -295,8 +318,10 @@ class SmallSmtCmd__SmtMode(SmallSmtPacket):
 
     def __init__(self, mode):
         SmallSmtPacket.__init__(self)
+        self.name = "SMT_MODE"
         databytes = bytearray(1)
         databytes[0] = mode
+        self.view = [1,1,1, 1, 3, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_SMT, databytes)
 
 
@@ -325,11 +350,13 @@ class SmallSmtCmd__Move(SmallSmtPacket):
 
     def __init__(self, motor,steps,startSpeed,runSpeed):
         SmallSmtPacket.__init__(self)
+        self.name = "SINGLE MOVE"
         databytes = bytearray()
         databytes.append(motor)
-        databytes.append(self.convertSteps(steps))
-        databytes.append(self.convertRange0_100ToByte(startSpeed))
-        databytes.append(self.convertRange0_100ToByte(runSpeed))
+        databytes += self.convertSteps(steps)
+        databytes.append(startSpeed)
+        databytes.append(runSpeed)
+        self.view = [1,1,1, 1, 4,1,1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_MOVEMENT, databytes)
 
 
@@ -347,25 +374,27 @@ class SmallSmtCmd__MultiMove(SmallSmtPacket):
                  stepsA4, startSpeedA4, runSpeedA4
                  ):
         SmallSmtPacket.__init__(self)
+        self.name = "MULTI MOVE"
         databytes = bytearray()
-        databytes.append(self.convertSteps(stepsX))
-        databytes.append(self.convertRange0_100ToByte(startSpeedX))
-        databytes.append(self.convertRange0_100ToByte(runSpeedX))
-        databytes.append(self.convertSteps(stepsY))
-        databytes.append(self.convertRange0_100ToByte(startSpeedY))
-        databytes.append(self.convertRange0_100ToByte(runSpeedY))
-        databytes.append(self.convertRotation(stepsA1))
-        databytes.append(self.convertRange0_100ToByte(startSpeedA1))
-        databytes.append(self.convertRange0_100ToByte(runSpeedA1))
-        databytes.append(self.convertRotation(stepsA2))
-        databytes.append(self.convertRange0_100ToByte(startSpeedA2))
-        databytes.append(self.convertRange0_100ToByte(runSpeedA2))
-        databytes.append(self.convertRotation(stepsA3))
-        databytes.append(self.convertRange0_100ToByte(startSpeedA3))
-        databytes.append(self.convertRange0_100ToByte(runSpeedA3))
-        databytes.append(self.convertRotation(stepsA4))
-        databytes.append(self.convertRange0_100ToByte(startSpeedA4))
-        databytes.append(self.convertRange0_100ToByte(runSpeedA4))
+        databytes += self.convertSteps(stepsX)
+        databytes.append(startSpeedX)
+        databytes.append(runSpeedX)
+        databytes += self.convertSteps(stepsY)
+        databytes.append(startSpeedY)
+        databytes.append(runSpeedY)
+        databytes += self.convertRotation(stepsA1)
+        databytes.append(startSpeedA1)
+        databytes.append(runSpeedA1)
+        databytes+= self.convertRotation(stepsA2)
+        databytes.append(startSpeedA2)
+        databytes.append(runSpeedA2)
+        databytes+= self.convertRotation(stepsA3)
+        databytes.append(startSpeedA3)
+        databytes.append(runSpeedA3)
+        databytes+= self.convertRotation(stepsA4)
+        databytes.append(startSpeedA4)
+        databytes.append(runSpeedA4)
+        self.view = [1,1,1, 4, 1, 1, 4, 1, 1, 2,1,1, 2,1,1, 2,1,1, 2,1,1,  1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_MULTI_MOVEMENT, databytes)
 
 
@@ -382,20 +411,23 @@ class SmallSmtCmd__FeederControl(SmallSmtPacket):
                  steps,startSpeed,runSpeed,
                  openLength,closedLength,openCloseSpeedStart,openCloseSpeedRun,
                  feedTime,
-                 pushCount):
+                 pushCount,
+                 unknown):
         SmallSmtPacket.__init__(self)
+        self.name = "FEEDERS"
         databytes = bytearray()
         databytes.append(dirFeeder)
-        databytes.append(self.convertSteps(steps))
-        databytes.append(self.convertRange0_100ToByte(startSpeed))
-        databytes.append(self.convertRange0_100ToByte(runSpeed))
-        databytes.append(self.convertShort(openLength))
-        databytes.append(self.convertShort(closedLength))
-        databytes.append(self.convertRange0_100ToByte(openCloseSpeedStart))
-        databytes.append(self.convertRange0_100ToByte(openCloseSpeedRun))
-        databytes.append(self.convertShort(feedTime))
+        databytes += self.convertSteps(steps)
+        databytes.append(startSpeed)
+        databytes.append(runSpeed)
+        databytes+= self.convertShort(openLength)
+        databytes+= self.convertShort(closedLength)
+        databytes.append(openCloseSpeedStart)
+        databytes.append(openCloseSpeedRun)
+        databytes+= self.convertShort(feedTime)
         databytes.append(pushCount)
-        databytes.append(0x01)
+        databytes.append(unknown)
+        self.view = [1,1,1, 1, 4, 1, 1, 2,2, 1,1 , 2,1,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_FEED, databytes)
 
 
@@ -407,14 +439,16 @@ class SmallSmtCmd__FeederControlYamaha(SmallSmtPacket):
 
     def __init__(self,feederIndex, fedTimeUs):
         SmallSmtPacket.__init__(self)
+        self.name = "FEEDERS CL"
         databytes = bytearray()
         databytes.append(self.DIR_SFEEDER)
-        databytes.append(self.convertLong(1<<feederIndex))
-        databytes.append(self.convertLong(0))
-        databytes.append(self.convertLong(0))
-        databytes.append(self.convertShort(fedTimeUs))
+        databytes += self.convertLong(1<<feederIndex)
+        databytes += self.convertLong(0)
+        databytes += self.convertLong(0)
+        databytes += self.convertShort(fedTimeUs)
         databytes.append(0x01) # push count
         databytes.append(feederIndex) # set feeder slot index
+        self.view = [1,1,1, 1, 4,4,4,2,1,1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_FEED, databytes)
 
 class SmallSmtCmd__Pick(SmallSmtPacket):
@@ -429,14 +463,16 @@ class SmallSmtCmd__Pick(SmallSmtPacket):
 
     def __init__(self,zAxis,startSpeed,runSpeed,zSteps,nozzleNr,putDelay,vacumTestLevel):
         SmallSmtPacket.__init__(self)
+        self.name = "PICK"
         databytes = bytearray()
         databytes.append(zAxis)
-        databytes.append(self.convertSteps(zSteps))
-        databytes.append(self.convertRange0_100ToByte(startSpeed))
-        databytes.append(self.convertRange0_100ToByte(runSpeed))
+        databytes += self.convertSteps(zSteps)
+        databytes.append(startSpeed)
+        databytes.append(runSpeed)
         databytes.append(nozzleNr)
-        databytes.append(self.convertShort(putDelay))
+        databytes += self.convertShort(putDelay)
         databytes.append(vacumTestLevel)
+        self.view = [1,1,1, 1, 4,  1, 1, 1,2,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_PICK_UP, databytes)
 
 
@@ -449,16 +485,18 @@ class SmallSmtCmd__Place(SmallSmtPacket):
     HEAD_ZAXIS3 = 0x03
     HEAD_ZAXIS4 = 0x03
 
-    def __init__(self,zAxis, startSpeed,runSpeed,zSteps,zStepVacumShut,putDelay,vacumTestLevel):
+    def __init__(self,zAxis,startSpeed,runSpeed,zSteps,zStepVacumShut,putDelay,vacumTestLevel):
         SmallSmtPacket.__init__(self)
+        self.name = "PLACE"
         databytes = bytearray()
         databytes.append(zAxis)
-        databytes.append(self.convertSteps(zSteps))
-        databytes.append(self.convertRange0_100ToByte(startSpeed))
-        databytes.append(self.convertRange0_100ToByte(runSpeed))
-        databytes.append(self.convertSteps(zStepVacumShut))
-        databytes.append(self.convertShort(putDelay))
+        databytes += self.convertSteps(zSteps)
+        databytes.append(startSpeed)
+        databytes.append(runSpeed)
+        databytes += self.convertSteps(zStepVacumShut)
+        databytes += self.convertShort(putDelay)
         databytes.append(vacumTestLevel)
+        self.view = [1,1,1, 1, 4, 1,1,4,2,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_PLACE, databytes)
 
 class SmallSmtCmd_Response(SmallSmtPacket):
@@ -476,8 +514,9 @@ class SmallSmtCmd_Response(SmallSmtPacket):
 
     def __init__(self, incoming_bytes):
         SmallSmtPacket.__init__(self)
+        self.name = "RESPONSE"
         self.decodePacket(incoming_bytes)
-
+        self.view = [1, 1, 1, 1,4]
 
 
 class SmallSmtProtocol:

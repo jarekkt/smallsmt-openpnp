@@ -1,0 +1,90 @@
+{
+    "py/object": "machineconfig.GlobalConfig",
+    "Axes": {
+        "py/object": "machineconfig.MachineRange",
+        "C1": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "C2": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "C3": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "C4": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "F1W": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "F2N": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "F3E": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "F4S": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "X": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "Y": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "Z1": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "Z2": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "Z3": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        },
+        "Z4": {
+            "py/object": "machineconfig.CoordInfo",
+            "Cnv_PulseToMm_f8": 1,
+            "Max_f3": 200.0,
+            "Min_f3": 0
+        }
+    }
+}

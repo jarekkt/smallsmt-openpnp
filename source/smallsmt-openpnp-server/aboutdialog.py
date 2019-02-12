@@ -24,6 +24,7 @@ class Ui_AboutDialog(object):
         self.verticalLayout.addWidget(self.pushButton)
 
         self.retranslateUi(AboutDialog)
+        self.pushButton.clicked.connect(AboutDialog.accept)
         QtCore.QMetaObject.connectSlotsByName(AboutDialog)
 
     def retranslateUi(self, AboutDialog):

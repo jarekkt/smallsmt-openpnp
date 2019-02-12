@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QFileDialog, QMessageBox
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot,QCoreApplication
 from PyQt5.QtSerialPort import QSerialPortInfo
 from optparse import OptionParser
 
@@ -9,6 +9,7 @@ import openpnp
 import smallsmt
 import smallsmtprotocol
 import configtreeview
+import commserial
 
 from mainwindow import Ui_MainWindow
 from dialogplayground import Ui_DialogPlayground
@@ -41,7 +42,8 @@ class Configure(QDialog, Ui_EditConfig):
 class Playground(QDialog, Ui_DialogPlayground):
 
     def executePacket(self,packet):
-        pass
+        self.frameOutLE.setText(packet.toString())
+        self.plainTextEdit.appendPlainText(packet.toString())
 
     def parseHexHint(self,text):
         value_hex = re.match("\s*0x([a-fA-F0-9]*)\s*.*$", text)
@@ -70,11 +72,11 @@ class Playground(QDialog, Ui_DialogPlayground):
             axes += "W2"
         if self.w3CB.isChecked():
             axes += "W3"
-        packet = smallsmtprotocol.SmallSmtCmd__Online(axes)
+        packet = smallsmtprotocol.SmallSmtCmd__Reset(axes)
         self.executePacket(packet)
 
     def pbBaseResetValves(self):
-        if self.resetValueCB.currentIndex() == 0:
+        if self.resetValueCBX.currentIndex() == 0:
             resetValue = self.rasetValveRawSB.value()
         else:
             resetValue = self.parseHexHint(self.resetValueCB.currentText())
@@ -82,7 +84,7 @@ class Playground(QDialog, Ui_DialogPlayground):
         self.executePacket(packet)
 
     def pbBaseSolenoid(self):
-        if self.solenoidC.currentIndex() == 0:
+        if self.solenoidCBX.currentIndex() == 0:
             ioValue = self.solenoidSB.value()
         else:
             ioValue = self.parseHexHint(self.solenoidCB.currentText())
@@ -149,22 +151,58 @@ class Playground(QDialog, Ui_DialogPlayground):
         self.executePacket(packet)
 
     def pbFeeder(self):
-        pass
+        feederId = self.parseHexHint(self.feedersCBX.currentText())
+        steps = self.fSteps.value()
+        startupSpeed = self.fSs.value()
+        runSpeed = self.fRs.value()
+        openLength = self.fOl.value()
+        closedLength = self.fCl.value()
+        ocStartSpeed = self.ocSs.value()
+        ocRunSpeed = self.ocRs.value()
+        feedTime = self.fFt.value()
+        pushCount = self.fPc.value()
+        unknown = self.flast.value()
+        packet = smallsmtprotocol.SmallSmtCmd__FeederControl(
+            feederId,steps, startupSpeed, runSpeed,
+            openLength, closedLength, ocStartSpeed, ocRunSpeed,
+            feedTime,pushCount,unknown
+        )
+        self.executePacket(packet)
+
 
     def pbClFeeder(self):
-        pass
+        feederId = self.fCli.value()
+        feederTime = self.fClt.value()
+        packet = smallsmtprotocol.SmallSmtCmd__FeederControlYamaha(feederId,feederTime)
+        self.executePacket(packet)
 
     def pbPick(self):
-        pass
+        zAxis = self.parseHexHint(self.pickAxeCBX.currentText())
+        steps = self.piZ.value()
+        startSpeed = self.piSs.value()
+        runSpeed = self.piRs.value()
+        nozzleId = self.piN.value()
+        putDelay = self.piPd.value()
+        vacuumTestLvl = self.piVtl.value()
+        packet = smallsmtprotocol.SmallSmtCmd__Pick(zAxis,startSpeed,runSpeed,steps,nozzleId,putDelay,vacuumTestLvl)
+        self.executePacket(packet)
 
     def pbPlace(self):
-        pass
+        zAxis = self.parseHexHint(self.placeAxeCBX.currentText())
+        steps = self.plZ.value()
+        startSpeed = self.plSs.value()
+        runSpeed = self.plRs.value()
+        stepsVacShut = self.plZsvs.value()
+        putDelay = self.plPd.value()
+        vacuumTestLvl = self.plVtl.value()
+        packet = smallsmtprotocol.SmallSmtCmd__Place(zAxis,startSpeed,runSpeed,steps,stepsVacShut,putDelay,vacuumTestLvl)
+        self.executePacket(packet)
 
-    def __init__(self):
+    def __init__(self,serial):
         QDialog.__init__(self)
         Ui_DialogPlayground.__init__(self)
         self.setupUi(self)
-
+        self.serial = serial
 
 class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
 
@@ -177,6 +215,10 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
         self.smallSmtMachine = smallsmt.SmallSmtMachine()
         self.smallSmtMachine.smallSmtLog.connect(self.logMessages)
         self.listPorts()
+        self.serial = commserial.CommSerial()
+
+        self.actionPlayground.setEnabled(False)
+        self.statusBar.showMessage(QCoreApplication.translate("App","Connect to machine serial port first"))
 
     def listPorts(self):
         available_ports = QSerialPortInfo.availablePorts()
@@ -191,19 +233,25 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
     def configure(self,machineType,machineConfig,machinePort,machineStart):
         self.reloadSettings()
 
-
-
-
-
     @pyqtSlot(str)
     def logMessages(self,msg):
-
         self.loggerWindow.appendPlainText(msg)
 
     @pyqtSlot()
     def enableComm(self):
-
-        pass
+        if self.serial.opened == True:
+            self.actionPlayground.setEnabled(False)
+            self.serial.disable()
+            self.pushButtonConnect.setText(QCoreApplication.translate("App","Connect"))
+        else:
+            if self.serial.enable(self.comboBoxSerialPorts.currentText()) == True:
+                self.pushButtonConnect.setText(QCoreApplication.translate("App","Disonnect"))
+                self.logMessages(QCoreApplication.translate("App","Opening serial port succeded"))
+                self.actionPlayground.setEnabled(True)
+                self.statusBar.showMessage(str.format("App","Connected to {}",self.comboBoxSerialPorts.currentText()))
+            else:
+                self.logMessages(QCoreApplication.translate("App","Opening serial port failed!"))
+                self.statusBar.showMessage(QCoreApplication.translate("App","Disconnected"))
 
     @pyqtSlot()
     def configGlobal(self):
@@ -228,7 +276,7 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
     def saveSettings(self):
         self.updateFileNames()
         if self.smallSmtMachine.is_valid(self.fileNameCalibrationFile)==False :
-            QMessageBox.warning(self, "Warning", "The config file name is not valid - fix it!")
+            QMessageBox.warning(self, QCoreApplication.translate("App","Warning"), QCoreApplication.translate("App","The config file name is not valid - fix it!"))
         else:
             self.smallSmtMachine.saveGlobalMachineData(self.fileNameGlobal)
             self.smallSmtMachine.saveCalibrationMachineData(self.fileNameCalibrationFile)
