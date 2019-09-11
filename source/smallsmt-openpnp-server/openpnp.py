@@ -86,9 +86,6 @@ class OpenPnp(QObject):
     def cmd__place(self,command):
         return 0
 
-    def cmd__dispense(self,command):
-        return 0
-
     def cmd__setEnabled(self,command):
         return 0
 

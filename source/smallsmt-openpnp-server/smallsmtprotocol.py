@@ -48,6 +48,7 @@ class SmallSmtPacket:
         self.identifier = None
         self.data_type = None
         self.checksum = None
+        self.checksum_calc = None
         self.bytes = None
         self.coordDelta = SmallSmtCoords()
 
@@ -58,37 +59,31 @@ class SmallSmtPacket:
         self.encode_packet()
 
     def encode_packet(self):
-        # Start character
         self.bytes = bytearray()
 
+        # Start character
         self.bytes.append(0xEE)
-        self.length += 1
         # Message identifier
         self.bytes.append(self.identifier)
-        self.length += 1
-        # Data length
+        # Data length - data bytes count(len) + message id(1) + data type(1)
         if self.databytes != None:
-            self.bytes.append(len(self.databytes) + 2)
+            self.bytes.append(len(self.databytes) + 1 + 1)
         else:
-            self.bytes.append(2)
+            self.bytes.append(1 + 1)
         # Data type
         self.bytes.append(self.data_type)
         # Data
         if self.databytes != None:
             self.bytes += self.databytes
-            self.length += 2 + len(self.databytes)
-        else:
-            self.length += 2
         # Checksum
-        self.checksum = self.checksumCalc(self.bytes, 2,self.length)
+        self.checksum = self.checksumCalc(self.bytes, 1,len(self.bytes))
         self.bytes.append(self.checksum)
-        self.length += 1
         # End characters
         self.bytes.append(0xFF)
         self.bytes.append(0xFC)
         self.bytes.append(0xFF)
         self.bytes.append(0xFF)
-        self.length += 4
+        self.length = len(self.bytes)
 
     def decodePacket(self, message):
         if len(message) < 7:
@@ -97,16 +92,28 @@ class SmallSmtPacket:
             raise Exception("Wrong start character")
         self.identifier = message[1]
         self.data_type = message[2]
-        self.length = len(message) - 7 # Note - no length field in messages from machine
-        self.databytes = bytearray(self.length)
-        for i in range(0, self.length):
-            self.databytes[i] = message[3+i]
-        self.checksum = message[len(message)-5]
-        if self.checksum != self.checksumCalc(message,2,len(message)-5):
-            raise Exception("Wrong checksum")
+        self.length = len(message) - 8 # Note - no length field in messages from machine
+                                       # 8 = 3 ( start,id,typ) + 1 (crc) + 4 ( end)
+
+        # Note - The empty response ( which seems to be only 7 bytes message) does not have crc  (spec is wrong here)
+        #        Response with data have crc
+        if self.length > 0:
+            self.databytes = bytearray(self.length)
+            for i in range(0, self.length):
+                self.databytes[i] = message[3+i]
+            self.checksum = message[len(message)-5]
+            self.checksum_calc = self.checksumCalc(message,0,len(message)-5)
+            # Not - it seems that the response checksum is fixed to 0xff !!
+            if (self.checksum != self.checksum_calc) and (self.checksum != 0xFF):
+                raise Exception("Wrong checksum")
+            self.view = [1, 1, 1, self.length,1, 4]
+        else:
+            self.view = [1, 1, 1, 4]
         if ((message[len(message)-1] != 0xFF) or (message[len(message)-2] != 0xFF) or
             (message[len(message)-3] != 0xFC) or (message[len(message)-4] != 0xFF)):
             raise Exception("Wrong stop characters")
+        self.bytes = message
+
 
     def checksumCalc(self,array,startIdx,endIdx):
         # Checksum by simple adding bytes
@@ -121,9 +128,8 @@ class SmallSmtPacket:
         if steps < 0:
             sign = 1
             steps = -steps
-        result = pack("<L",int(steps))
-        if sign != 0:
-            result[0] = result[0] | 0x80
+            steps |= 0x80000000
+        result = pack(">L",int(steps))
         return bytearray(result)
 
     def convertRotation(self,steps):
@@ -132,9 +138,8 @@ class SmallSmtPacket:
         if steps < 0:
             sign = 1
             steps = -steps
-        result = pack("<H",int(steps))
-        if sign != 0:
-            result[0] = result[0] | 0x80
+            steps |= 0x8000
+        result = pack(">H",int(steps))
         return bytearray(result)
 
     def convertShort(self, val):
@@ -182,25 +187,25 @@ class SmallSmtCmd__Reset(SmallSmtPacket):
         self.name = "RESET"
         databytes = bytearray(14)
         marker = 0x06  # According to doc anything non-zero
-        if axes.find("X"):
+        if axes.find("X") >= 0:
             databytes[0] = marker
             databytes[1] = marker
-        if axes.find("Y"):
+        if axes.find("Y") >= 0:
             databytes[2] = marker
             databytes[3] = marker
-        if axes.find("Z1"):
+        if axes.find("Z1")>= 0:
             databytes[4] = marker
             databytes[5] = marker
-        if axes.find("Z2"):
+        if axes.find("Z2")>= 0:
             databytes[6] = marker
             databytes[7] = marker
-        if axes.find("W1"):
+        if axes.find("W1")>= 0:
             databytes[8] = marker
             databytes[9] = marker
-        if axes.find("W2"):
+        if axes.find("W2")>= 0:
             databytes[10] = marker
             databytes[11] = marker
-        if axes.find("W3"):
+        if axes.find("W3")>= 0:
             databytes[12] = marker
             databytes[13] = marker
         self.view = [1,1,1,2,2,2,2,2,2,2,1,4]
@@ -223,7 +228,7 @@ class SmallSmtCmd__ResetValves(SmallSmtPacket):
         databytes.append(0x00)
         databytes.append(0x00)
         databytes.append(0x64)
-        self.view = [1, 1,1,1, 3, 1,4]
+        self.view = [1, 1,1,1, 1,3, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_RESET, databytes)
 
 class SmallSmtCmd__Solenoid(SmallSmtPacket):
@@ -252,7 +257,7 @@ class SmallSmtCmd__Solenoid(SmallSmtPacket):
             databytes[1] = 1
         else:
             databytes[1] = 0
-        self.view = [1, 1,1,1, 1, 1,4]
+        self.view = [1, 1,1,1, 1, 1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_SOLENOID, databytes)
 
 
@@ -270,7 +275,7 @@ class SmallSmtCmd__CameraMux(SmallSmtPacket):
         databytes = bytearray(2)
         databytes[0] = cameraId
         databytes[1] = brightness
-        self.view = [1, 1,1,1, 1, 1,4]
+        self.view = [1, 1,1,1, 1,1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_VISUAL, databytes)
 
 
@@ -283,7 +288,7 @@ class SmallSmtCmd__SpeedCoefficient(SmallSmtPacket):
         self.name = "SPEED COEF"
         databytes = bytearray(1)
         databytes[0] = speedVal
-        self.view = [1, 1, 1,4]
+        self.view = [1, 1, 1,1,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_SPEED, databytes)
 
 
@@ -301,7 +306,7 @@ class SmallSmtCmd__ReadVacum(SmallSmtPacket):
         self.name = "READ VACUUM"
         databytes = bytearray(1)
         databytes[0] = head_nozzle
-        self.view = [1,1,1, 1, 1,4]
+        self.view = [1,1,1, 1, 1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_VACUUM, databytes)
 
 
@@ -321,7 +326,7 @@ class SmallSmtCmd__SmtMode(SmallSmtPacket):
         self.name = "SMT_MODE"
         databytes = bytearray(1)
         databytes[0] = mode
-        self.view = [1,1,1, 1, 3, 1,4]
+        self.view = [1,1,1, 1, 1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_SMT, databytes)
 
 
@@ -356,7 +361,7 @@ class SmallSmtCmd__Move(SmallSmtPacket):
         databytes += self.convertSteps(steps)
         databytes.append(startSpeed)
         databytes.append(runSpeed)
-        self.view = [1,1,1, 1, 4,1,1, 1,4]
+        self.view = [1,1,1, 1,1, 4,1,1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_MOVEMENT, databytes)
 
 
@@ -371,7 +376,8 @@ class SmallSmtCmd__MultiMove(SmallSmtPacket):
                  stepsA1,startSpeedA1,runSpeedA1,
                  stepsA2, startSpeedA2, runSpeedA2,
                  stepsA3, startSpeedA3, runSpeedA3,
-                 stepsA4, startSpeedA4, runSpeedA4
+                 stepsA4, startSpeedA4, runSpeedA4,
+                 returnEarly
                  ):
         SmallSmtPacket.__init__(self)
         self.name = "MULTI MOVE"
@@ -394,7 +400,9 @@ class SmallSmtCmd__MultiMove(SmallSmtPacket):
         databytes+= self.convertRotation(stepsA4)
         databytes.append(startSpeedA4)
         databytes.append(runSpeedA4)
-        self.view = [1,1,1, 4, 1, 1, 4, 1, 1, 2,1,1, 2,1,1, 2,1,1, 2,1,1,  1,4]
+        #databytes.append(returnEarly)
+        databytes.append(0x80)
+        self.view = [1,1,1,1, 4, 1, 1, 4, 1, 1, 2,1,1, 2,1,1, 2,1,1, 2,1,1,  1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_MULTI_MOVEMENT, databytes)
 
 
@@ -427,7 +435,7 @@ class SmallSmtCmd__FeederControl(SmallSmtPacket):
         databytes+= self.convertShort(feedTime)
         databytes.append(pushCount)
         databytes.append(unknown)
-        self.view = [1,1,1, 1, 4, 1, 1, 2,2, 1,1 , 2,1,1,1,4]
+        self.view = [1,1,1, 1,1, 4, 1, 1, 2,2, 1,1 , 2,1,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_FEED, databytes)
 
 
@@ -448,7 +456,7 @@ class SmallSmtCmd__FeederControlYamaha(SmallSmtPacket):
         databytes += self.convertShort(fedTimeUs)
         databytes.append(0x01) # push count
         databytes.append(feederIndex) # set feeder slot index
-        self.view = [1,1,1, 1, 4,4,4,2,1,1, 1,4]
+        self.view = [1,1,1, 1,1, 4,4,4,2,1,1, 1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_FEED, databytes)
 
 class SmallSmtCmd__Pick(SmallSmtPacket):
@@ -472,7 +480,7 @@ class SmallSmtCmd__Pick(SmallSmtPacket):
         databytes.append(nozzleNr)
         databytes += self.convertShort(putDelay)
         databytes.append(vacumTestLevel)
-        self.view = [1,1,1, 1, 4,  1, 1, 1,2,1,1,4]
+        self.view = [1,1,1,1, 1, 4,  1, 1, 1,2,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_PICK_UP, databytes)
 
 
@@ -496,7 +504,7 @@ class SmallSmtCmd__Place(SmallSmtPacket):
         databytes += self.convertSteps(zStepVacumShut)
         databytes += self.convertShort(putDelay)
         databytes.append(vacumTestLevel)
-        self.view = [1,1,1, 1, 4, 1,1,4,2,1,1,4]
+        self.view = [1,1,1,1, 1, 4, 1,1,4,2,1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_PLACE, databytes)
 
 class SmallSmtCmd_Response(SmallSmtPacket):
@@ -516,7 +524,7 @@ class SmallSmtCmd_Response(SmallSmtPacket):
         SmallSmtPacket.__init__(self)
         self.name = "RESPONSE"
         self.decodePacket(incoming_bytes)
-        self.view = [1, 1, 1, 1,4]
+
 
 
 class SmallSmtProtocol:

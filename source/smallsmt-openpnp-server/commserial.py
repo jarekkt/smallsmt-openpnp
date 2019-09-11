@@ -6,7 +6,7 @@ import time
 
 class CommSerial(QObject):
 
-    getFromSmallSmt = pyqtSignal(bool,bytearray)
+    getFromSmallSmt = pyqtSignal(bytearray)
 
     def __init__(self,timeout = 1000):
         QObject.__init__(self)
@@ -29,8 +29,9 @@ class CommSerial(QObject):
             self.disable()
         try:
             result = False
+            system_port = '/dev/'+name
             self.qport = QSerialPort()
-            self.qport.setObjectName(name)
+            self.qport.setPortName(system_port)
             self.qport.setBaudRate(QSerialPort.Baud115200)
             self.qport.setDataBits(QSerialPort.Data8)
             self.qport.setParity(QSerialPort.NoParity)
@@ -65,27 +66,26 @@ class CommSerial(QObject):
         # If frame not valid - look for start character
         if self.frameIsValid == False:
             for ii in range(0,len(chars)):
-               if chars[ii] == 0xEE:
-                   idx = ii
-                   self.frameIsValid = True
-                   break
+                cc = chars[ii]
+                if chars[ii] == b'\xee':
+                    idx = ii
+                    self.frameIsValid = True
+                    break
         # For valid frame - take remaining characters
         if self.frameIsValid == True:
             for ii in range(idx, len(chars)):
-                self.inBuffer.append(chars[ii])
+                self.inBuffer.append(ord(chars[ii]))
 
         # Check for end characters
         idx = 0
         done = False
-        if len(self.inBuffer) >= 8:
-            for ii in range(3, self.inBuffer):
-                if (self.inBuffer(ii) == 0xFF) and (self.inBuffer(ii+1) == 0xFC) and (self.inBuffer(ii) == 0xFF+2) and (self.inBuffer(ii+3) == 0xFF):
-                    self.inBuffer = self.inBuffer[:(ii+3)]
-                    done = True
-                    break
+        if len(self.inBuffer) >= 7:
+            ii =  len(self.inBuffer)-4
+            if ( self.inBuffer[ii] == 0xFF) and (self.inBuffer[ii+1] == 0xFC) and (self.inBuffer[ii+2] == 0xFF) and (self.inBuffer[ii+3] == 0xFF):
+                done = True
         # If frame found, report it
         if done:
-            self.getFromSmallSmt.emit(chars)
+            self.getFromSmallSmt.emit(self.inBuffer)
             self.frameIsValid = False
             self.inBuffer.clear()
 

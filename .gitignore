@@ -36,3 +36,11 @@ docs/*
 references/*
 /source/smallsmt-openpnp-server/.idea
 /source/smallsmt-openpnp-server/__pycache__
+/reference/dest
+/reference/ComGUI/debug
+/reference/ComGUI
+/reference/V2ComDLL
+/reference/build-ComGUI-Desktop_Qt_5_9_2_GCC_64bit-Debug
+/reference/build-V2ComDLL-Desktop_Qt_5_9_2_GCC_64bit-Debug
+/reference/common
+/reference/interface

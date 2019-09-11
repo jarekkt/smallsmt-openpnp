@@ -44,6 +44,15 @@ class Playground(QDialog, Ui_DialogPlayground):
     def executePacket(self,packet):
         self.frameOutLE.setText(packet.toString())
         self.plainTextEdit.appendPlainText(packet.toString())
+        self.frameInLE.clear()
+        self.serial.sendToSmallSmt(packet.bytes)
+
+    @pyqtSlot(bytearray)
+    def receivePacket(self,msg):
+        recvPacket = smallsmtprotocol.SmallSmtCmd_Response(msg)
+        recvDecoded = recvPacket.toString()
+        self.frameInLE.setText(recvDecoded)
+        self.plainTextEdit.appendPlainText(recvDecoded)
 
     def parseHexHint(self,text):
         value_hex = re.match("\s*0x([a-fA-F0-9]*)\s*.*$", text)
@@ -79,7 +88,7 @@ class Playground(QDialog, Ui_DialogPlayground):
         if self.resetValueCBX.currentIndex() == 0:
             resetValue = self.rasetValveRawSB.value()
         else:
-            resetValue = self.parseHexHint(self.resetValueCB.currentText())
+            resetValue = self.parseHexHint(self.resetValueCBX.currentText())
         packet = smallsmtprotocol.SmallSmtCmd__ResetValves(resetValue)
         self.executePacket(packet)
 
@@ -87,7 +96,7 @@ class Playground(QDialog, Ui_DialogPlayground):
         if self.solenoidCBX.currentIndex() == 0:
             ioValue = self.solenoidSB.value()
         else:
-            ioValue = self.parseHexHint(self.solenoidCB.currentText())
+            ioValue = self.parseHexHint(self.solenoidCBX.currentText())
         ioSet = self.solenoidEnableCB.isChecked()
         packet = smallsmtprotocol.SmallSmtCmd__Solenoid(ioValue,ioSet)
         self.executePacket(packet)
@@ -141,13 +150,15 @@ class Playground(QDialog, Ui_DialogPlayground):
         stepsA4= self.hmStepsA4.value()
         startSpeedA4= self.hmSsA4.value()
         runSpeedA4= self.hmRsA4.value()
+        returnEarly=self.waitCB.isChecked()
         packet = smallsmtprotocol.SmallSmtCmd__MultiMove(
             stepsX, startSpeedX, runSpeedX,
             stepsY, startSpeedY, runSpeedY,
             stepsA1, startSpeedA1, runSpeedA1,
             stepsA2, startSpeedA2, runSpeedA2,
             stepsA3, startSpeedA3, runSpeedA3,
-            stepsA4, startSpeedA4, runSpeedA4)
+            stepsA4, startSpeedA4, runSpeedA4,
+            returnEarly)
         self.executePacket(packet)
 
     def pbFeeder(self):
@@ -198,11 +209,15 @@ class Playground(QDialog, Ui_DialogPlayground):
         packet = smallsmtprotocol.SmallSmtCmd__Place(zAxis,startSpeed,runSpeed,steps,stepsVacShut,putDelay,vacuumTestLvl)
         self.executePacket(packet)
 
+
+
     def __init__(self,serial):
         QDialog.__init__(self)
         Ui_DialogPlayground.__init__(self)
         self.setupUi(self)
         self.serial = serial
+        self.serial.getFromSmallSmt.connect(self.receivePacket)
+
 
 class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
 
@@ -284,7 +299,7 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def playground(self):
-        configPlay = Playground()
+        configPlay = Playground(self.serial)
         configPlay.exec()
 
 
