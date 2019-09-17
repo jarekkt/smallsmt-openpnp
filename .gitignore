@@ -44,3 +44,5 @@ references/*
 /reference/build-V2ComDLL-Desktop_Qt_5_9_2_GCC_64bit-Debug
 /reference/common
 /reference/interface
+/source/feeder-openpnp-configure/.idea
+/source/smallsmt-openpnp-server/test_env

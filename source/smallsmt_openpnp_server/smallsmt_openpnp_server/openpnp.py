@@ -21,10 +21,13 @@ class OpenPnp(QObject):
 
     openPnpLog = pyqtSignal([str])
 
-    def __init__(self):
+    def __init__(self,machine,serial):
         QObject.__init__(self)
         self.comm = commsockets.CommSockets()
         self.comm.getFromOpenPnp.connect(self.processRequest)
+        self.machine = machine
+        self.serial = serial
+
 
     def logInfo(self,logText):
         self.openPnpLog.emit(logText)
