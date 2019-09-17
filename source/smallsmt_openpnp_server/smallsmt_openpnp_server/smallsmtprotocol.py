@@ -34,7 +34,7 @@ class SmallSmtCoords:
         self.Xsteps_delta = 0
         self.Y = 0
         self.Ysteps = 0
-        self.ysteps_delta = 0
+        self.Ysteps_delta = 0
         self.Z12 = 0
         self.Z12steps = 0
         self.Z12steps_delta = 0

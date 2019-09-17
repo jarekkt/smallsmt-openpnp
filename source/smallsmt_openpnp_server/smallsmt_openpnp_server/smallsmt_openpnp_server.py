@@ -5,6 +5,7 @@ from optparse import OptionParser
 
 import sys
 import re
+import os
 import openpnp
 import smallsmt
 import smallsmtprotocol
@@ -242,8 +243,8 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
             self.comboBoxSerialPorts.addItem(port.portName())
 
     def updateFileNames(self):
-        self.fileNameGlobal = self.machineTypesCB.currentText() + ".json"
-        self.fileNameCalibrationFile = self.fnameLE.text()
+        self.fileNameGlobal = os.path.join(os.path.dirname(__file__), self.machineTypesCB.currentText() + ".json")
+        self.fileNameCalibrationFile = os.path.abspath(self.fnameLE.text())
 
     def configure(self,machineType,machineConfig,machinePort,machineStart):
         self.reloadSettings()
