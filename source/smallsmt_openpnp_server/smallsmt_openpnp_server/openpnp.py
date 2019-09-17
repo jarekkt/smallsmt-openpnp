@@ -58,8 +58,6 @@ class OpenPnp(QObject):
             result = self.cmd__actuate(command)
         elif command.startswith("actuateRead("):
             result = self.cmd__actuateRead(command)
-        elif command.startswith("dispense("):
-            result = self.cmd__dispense(command)
         else:
             pass
 

@@ -30,11 +30,36 @@ class MachineRange:
         self.F4S = CoordInfo()
 
 
+class FeedTemplate:
+    def __init__(self):
+        self.Cnv_PulseToMm_f8 = 1
+        self.Min_f3 = 0
+        self.Max_f3 = 200.0
+
+
+
+class FeedTemplates:
+    def __init__(self,cnt):
+        self.position_f = []
+        for i in range(cnt):
+            self.position_f.append(0)
+
+
+class SpeedTemplate:
+    def __init__(self,cnt):
+        self.position_f = []
+        for i in range(cnt):
+            self.position_f.append(0)
+
+
+
+
 class SideFeeder:
     def __init__(self,cnt):
         self.position_f = []
         for i in range(cnt):
             self.position_f.append(0)
+
 
 
 class GlobalConfig:
