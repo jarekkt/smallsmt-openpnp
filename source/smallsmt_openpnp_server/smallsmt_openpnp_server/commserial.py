@@ -13,6 +13,7 @@ class CommSerial(QObject):
         self.opened = False
         self.timeout = timeout
         self.inBuffer = bytearray()
+        self.inBuffer_last = bytearray()
         self.frameIsValid = False
         self.frameTimestamp = self.millis()
         self.qport = None
@@ -85,6 +86,7 @@ class CommSerial(QObject):
                 done = True
         # If frame found, report it
         if done:
+            self.inBuffer_last = self.inBuffer
             self.getFromSmallSmt.emit(self.inBuffer)
             self.frameIsValid = False
             self.inBuffer.clear()
@@ -94,3 +96,9 @@ class CommSerial(QObject):
     def sendToSmallSmt(self, message):
         if self.opened == True:
             self.qport.write(message)
+            return 0
+        else:
+            return -1
+
+    def getFromSmallSmtLast(self):
+        return self.inBuffer_last

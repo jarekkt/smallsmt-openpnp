@@ -2,36 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f8fbc89-6e3f-424e-af6e-fe5ec64a19ee" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../LICENSE" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/MANIFEST" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/Pipfile" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/Pipfile.lock" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/VP-2000S.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/aboutdialog.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/aboutdialog.ui" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/commserial.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/commsockets.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/configtreeview.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/dialogplayground.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/dialogplayground.ui" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/dist/PySmallSmt-1.0.tar.gz" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/editconfig.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/editconfig.ui" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/machine.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/machine_s.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/machineconfig.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/mainwindow.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/mainwindow.ui" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/openpnp.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/setup.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/smallsmt-openpnp-server.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/smallsmt.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/smallsmtprotocol.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/test.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/ui2py.bat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/ui2py.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../smallsmt-openpnp-server/vp-calibration.json" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smallsmt_openpnp_server/commserial.py" afterPath="$PROJECT_DIR$/smallsmt_openpnp_server/commserial.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smallsmt_openpnp_server/openpnp.py" afterPath="$PROJECT_DIR$/smallsmt_openpnp_server/openpnp.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smallsmt_openpnp_server/ui2py.sh" afterPath="$PROJECT_DIR$/smallsmt_openpnp_server/ui2py.sh" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -57,8 +31,8 @@
       <file leaf-file-name="openpnp.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/openpnp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-72">
-              <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="13" />
+            <state relative-caret-position="202">
+              <caret line="109" column="5" lean-forward="true" selection-start-line="109" selection-start-column="5" selection-end-line="109" selection-end-column="5" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
               </folding>
@@ -66,32 +40,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="smallsmt_openpnp_server.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/smallsmt_openpnp_server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1962">
-              <caret line="162" column="0" lean-forward="true" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#88#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="commsockets.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/commsockets.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#68#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="editconfig.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/editconfig.py">
+      <file leaf-file-name="aboutdialog.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/aboutdialog.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -100,11 +50,45 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="machine.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/machine.xml">
+      <file leaf-file-name="commserial.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/commserial.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="416">
+              <caret line="95" column="22" lean-forward="false" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#69#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="smallsmt_openpnp_server.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/smallsmt_openpnp_server.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="488">
+              <caret line="339" column="0" lean-forward="false" selection-start-line="339" selection-start-column="0" selection-end-line="339" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="commsockets.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/commsockets.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#68#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="apport_python_hook.py" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/lib/python3/dist-packages/apport_python_hook.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -122,31 +106,23 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="smallsmtprotocol.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/smallsmtprotocol.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="282">
+              <caret line="206" column="0" lean-forward="false" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="13" lean-forward="false" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="scratch.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dialogplayground.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/dialogplayground.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -175,6 +151,11 @@
       <find>SmallSmtCmd__MultiMove</find>
       <find>pack</find>
       <find>openpnp</find>
+      <find>cmd__actuateRead</find>
+      <find>.send</find>
+      <find>re</find>
+      <find>executeResponse</find>
+      <find>executeRequest</find>
     </findStrings>
     <replaceStrings>
       <replace>:</replace>
@@ -201,6 +182,9 @@
         <option value="$PROJECT_DIR$/smallsmt_openpnp_server/smallsmt_openpnp_server.py" />
         <option value="$PROJECT_DIR$/smallsmt_openpnp_server/__init__.py" />
         <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/smallsmt_openpnp_server/smallsmtprotocol.py" />
+        <option value="$PROJECT_DIR$/smallsmt_openpnp_server/commserial.py" />
+        <option value="$PROJECT_DIR$/smallsmt_openpnp_server/openpnp.py" />
       </list>
     </option>
   </component>
@@ -228,7 +212,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -249,6 +232,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -331,16 +315,16 @@
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21208851" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15866163" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.115911484" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30411828" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10770855" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3875396" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21752904" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -364,14 +348,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="54" />
+      <option name="time" value="65" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/smallsmt-openpnp-server.py" />
-    <entry file="file://$PROJECT_DIR$/commsockets.py" />
-    <entry file="file://$PROJECT_DIR$/mainwindow.py" />
     <entry file="file://$PROJECT_DIR$/openpnp.py" />
     <entry file="file://$PROJECT_DIR$/mainwindow.py" />
     <entry file="file://$PROJECT_DIR$/smallsmt-openpnp-server.py" />
@@ -401,13 +382,6 @@
     <entry file="file://$PROJECT_DIR$/commsockets.py" />
     <entry file="file://$PROJECT_DIR$/mainwindow.py" />
     <entry file="file://$PROJECT_DIR$/dialogplayground.py" />
-    <entry file="file:///usr/lib/python3/dist-packages/apport_python_hook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/lib/python3.6/_bootlocale.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -432,33 +406,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/machine.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/smallsmt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/machine.xml" />
     <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/dialogplayground.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -467,16 +422,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/commsockets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#68#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -498,20 +443,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/smallsmt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/aboutdialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/smallsmtprotocol.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="206" column="0" lean-forward="false" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3/dist-packages/apport_python_hook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/commsockets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#68#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/smallsmt_openpnp_server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1962">
-          <caret line="162" column="0" lean-forward="true" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+        <state relative-caret-position="488">
+          <caret line="339" column="0" lean-forward="false" selection-start-line="339" selection-start-column="0" selection-end-line="339" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/commserial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="95" column="22" lean-forward="false" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="22" />
           <folding>
-            <element signature="e#0#88#0" expanded="true" />
+            <element signature="e#0#69#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/smallsmt_openpnp_server/openpnp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-72">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="13" />
+        <state relative-caret-position="202">
+          <caret line="109" column="5" lean-forward="true" selection-start-line="109" selection-start-column="5" selection-end-line="109" selection-end-column="5" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
           </folding>

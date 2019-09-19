@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSlot,pyqtSignal
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject,QEventLoop,QTimer
 import commsockets
+import smallsmtprotocol
 
 
 class OpenPnp(QObject):
@@ -19,6 +20,9 @@ class OpenPnp(QObject):
     Z4 = 0
     C4 = 0
 
+    timer = QTimer()
+
+
     openPnpLog = pyqtSignal([str])
 
     def __init__(self,machine,serial):
@@ -28,6 +32,9 @@ class OpenPnp(QObject):
         self.machine = machine
         self.serial = serial
 
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self.executeRequestTimeout)
+        self.serial.getFromSmallSmt.connect(self.executeRequestResponse)
 
     def logInfo(self,logText):
         self.openPnpLog.emit(logText)
@@ -47,6 +54,7 @@ class OpenPnp(QObject):
 
     def executeRequest(self,msgId,command):
         result = -1
+        self.msgId = msgId
         if command.startswith("home("):
             result = self.cmd__home()
         elif command.startswith("moveTo("):
@@ -65,9 +73,12 @@ class OpenPnp(QObject):
             pass
 
         if result == -1:
-            self.logInfo(str.format("Command unrecognized: {} ", command))
-        else:
-            self.executeResponse(msgId)
+            # The code comes here only in case of wrong command
+            # Otherwise it is being processed in commands itself
+            self.logInfo(str.format("Command unrecognized or not sent: {} ", command))
+            self.status = -1
+            self.executeResponse(self.msgId)
+
 
     def cmd__home(self):
         return 0
@@ -88,6 +99,45 @@ class OpenPnp(QObject):
         return 0
 
     def cmd__setEnabled(self,command):
+
+        self.openPnpLog.emit("Executed: setEnabled")
+
+        self.packet = smallsmtprotocol.SmallSmtCmd__Online()
+        return self.cmd__execute(self.packet,1000)
+
+    def cmd__execute(self,packet,timeout):
+
+        result = self.serial.sendToSmallSmt(self.packet.bytes)
+        result = 0
+        if result == 0:
+            #Send succesfull
+            if timeout!= 0:
+                self.timer.start(timeout)
+            else:
+                self.timer.stop()
+            return 0
+        else:
+            return  result
+
+
+    @pyqtSlot()
+    def executeRequestResponse(self):
+        self.timer.stop()
+
+        self.status = 0
+        self.executeResponse(self.msgId)
+
+    @pyqtSlot()
+    def executeRequestTimeout(self):
+        self.logInfo(str.format("Command timeout - no machine response "))
+        self.status = -1
+        self.executeResponse(self.msgId)
+
+
+
+
+
+    def cmd__actuateRead(self,command):
         return 0
 
     @pyqtSlot(str)
@@ -103,4 +153,6 @@ class OpenPnp(QObject):
                self.executeRequest(msgId,msgCommand)
         if msgOk == 0:
             self.logInfo(str.format("Request faulty: {} ",request) )
+
+
 
