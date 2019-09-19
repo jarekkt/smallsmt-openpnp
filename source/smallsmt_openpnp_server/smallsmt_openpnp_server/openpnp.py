@@ -8,7 +8,7 @@ class OpenPnp(QObject):
 
     PROTOCOL_VERSION = "V1"
     status = 1
-    value  = 0
+    value = 0
     X = 0
     Y = 0
     Z1 = 0
@@ -21,6 +21,8 @@ class OpenPnp(QObject):
     C4 = 0
 
     timer = QTimer()
+    requests = []
+    requests_id = 0
 
 
     openPnpLog = pyqtSignal([str])
@@ -34,7 +36,7 @@ class OpenPnp(QObject):
 
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.executeRequestTimeout)
-        self.serial.getFromSmallSmt.connect(self.executeRequestResponse)
+        self.serial.getFromSmallSmt.connect(self.cmd__execute)
 
     def logInfo(self,logText):
         self.openPnpLog.emit(logText)
@@ -102,34 +104,48 @@ class OpenPnp(QObject):
 
         self.openPnpLog.emit("Executed: setEnabled")
 
-        self.packet = smallsmtprotocol.SmallSmtCmd__Online()
-        return self.cmd__execute(self.packet,1000)
+        self.cmd__execute_prepare()
+        self.requests.append({"tout": 1000, "packet": smallsmtprotocol.SmallSmtCmd__Online()})
+        return self.cmd__execute()
 
-    def cmd__execute(self,packet,timeout):
-
-        result = self.serial.sendToSmallSmt(self.packet.bytes)
-        result = 0
-        if result == 0:
-            #Send succesfull
-            if timeout!= 0:
-                self.timer.start(timeout)
-            else:
-                self.timer.stop()
-            return 0
-        else:
-            return  result
-
+    def cmd__execute_prepare(self):
+        self.requests.clear()
+        self.requests_id = 0
 
     @pyqtSlot()
-    def executeRequestResponse(self):
+    def cmd__execute(self):
         self.timer.stop()
+        repeat = True
 
-        self.status = 0
-        self.executeResponse(self.msgId)
+        while repeat:
+            repeat = False
+            if self.self.requests_id < len(self.requests):
+                # More packages to be sent
+                packet = self.requests[self.self.requests_id]["packet"]
+                timeout = self.requests[self.self.requests_id]["tout"]
+                self.self.requests_id = self.self.requests_id + 1
+
+                result = self.serial.sendToSmallSmt(packet.bytes)
+                if result == 0:
+                    # Send succesfull
+                    if timeout == 0:
+                        self.timer.start(timeout)
+                    else:
+                        repeat = True
+                else:
+                    self.logInfo(str.format("Command sending failure"))
+                    self.status = -1
+                    self.executeResponse(self.msgId)
+
+            else:
+                # All packages sent
+                self.status = 0
+                self.executeResponse(self.msgId)
+                return
 
     @pyqtSlot()
     def executeRequestTimeout(self):
-        self.logInfo(str.format("Command timeout - no machine response "))
+        self.logInfo(str.format("Command timeout - no machine response"))
         self.status = -1
         self.executeResponse(self.msgId)
 
