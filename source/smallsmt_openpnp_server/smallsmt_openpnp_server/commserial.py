@@ -81,8 +81,8 @@ class CommSerial(QObject):
         idx = 0
         done = False
         if len(self.inBuffer) >= 7:
-            ii =  len(self.inBuffer)-4
-            if ( self.inBuffer[ii] == 0xFF) and (self.inBuffer[ii+1] == 0xFC) and (self.inBuffer[ii+2] == 0xFF) and (self.inBuffer[ii+3] == 0xFF):
+            ii = len(self.inBuffer)-4
+            if (self.inBuffer[ii] == 0xFF) and (self.inBuffer[ii+1] == 0xFC) and (self.inBuffer[ii+2] == 0xFF) and (self.inBuffer[ii+3] == 0xFF):
                 done = True
         # If frame found, report it
         if done:

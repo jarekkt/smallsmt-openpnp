@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QFileDialog, QMessageBox
-from PyQt5.QtCore import pyqtSlot,QCoreApplication
+from PyQt5.QtCore import pyqtSlot,QCoreApplication,QStandardPaths, QDirIterator, QDir,QFileInfo
 from PyQt5.QtSerialPort import QSerialPortInfo
 from optparse import OptionParser
 
@@ -7,7 +7,7 @@ import sys
 import re
 import os
 import openpnp
-import smallsmt
+import smallsmtconfig
 import smallsmtprotocol
 import configtreeview
 import commserial
@@ -226,12 +226,18 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        self.smallSmtMachine = smallsmt.SmallSmtMachine()
+        self.smallSmtMachine = smallsmtconfig.SmallSmtConfig()
         self.smallSmtMachine.smallSmtLog.connect(self.logMessages)
         self.listPorts()
         self.serial = commserial.CommSerial()
         self.openPnp = openpnp.OpenPnp(self.smallSmtMachine,self.serial)
         self.openPnp.openPnpLog.connect(self.logMessages)
+
+        self.dataProgramDir = os.path.dirname(__file__)
+        self.dataConfigDir = QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)
+        # Make sure our data path exists
+        os.makedirs(self.dataConfigDir,exist_ok=True)
+
 
         self.actionPlayground.setEnabled(False)
         self.statusBar.showMessage(QCoreApplication.translate("App","Connect to machine serial port first"))
@@ -243,10 +249,17 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
             self.comboBoxSerialPorts.addItem(port.portName())
 
     def updateFileNames(self):
-        self.fileNameGlobal = os.path.join(os.path.dirname(__file__), self.machineTypesCB.currentText() + ".json")
-        self.fileNameCalibrationFile = os.path.abspath(self.fnameLE.text())
+        self.fileNameGlobal = os.path.join(self.dataConfigDir, self.machineTypesCB.currentText() + ".machine.json")
+        self.fileNameGlobalDefault = os.path.join(self.dataProgramDir, self.machineTypesCB.currentText() + ".machine.json")
+        self.fileNameCalibrationFile = os.path.join(self.dataConfigDir, self.machineConfigCB.currentText() + ".cfg.json")
 
     def configure(self,machineType,machineConfig,machinePort,machineStart):
+        it = QDirIterator(self.dataConfigDir, ['*.cfg.json'])
+        while it.hasNext():
+            fileInfo = QFileInfo(it.next())
+            basename = fileInfo.baseName()
+            self.machineConfigCB.addItem(basename)
+
         self.reloadSettings()
 
     @pyqtSlot(str)
@@ -286,31 +299,27 @@ class SmallSmtDriverApp(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def reloadSettings(self):
         self.updateFileNames()
-        self.smallSmtMachine.loadMachineData(self.fileNameGlobal,self.fileNameCalibrationFile)
+        self.smallSmtMachine.loadMachineData(self.fileNameGlobal,self.fileNameGlobalDefault,self.fileNameCalibrationFile)
 
     @pyqtSlot()
     def saveSettings(self):
         self.updateFileNames()
-        if self.smallSmtMachine.is_valid(self.fileNameCalibrationFile)==False :
-            QMessageBox.warning(self, QCoreApplication.translate("App","Warning"), QCoreApplication.translate("App","The config file name is not valid - fix it!"))
-        else:
-            self.smallSmtMachine.saveGlobalMachineData(self.fileNameGlobal)
-            self.smallSmtMachine.saveCalibrationMachineData(self.fileNameCalibrationFile)
+        if not self.smallSmtMachine.is_valid(self.fileNameCalibrationFile):
+            QMessageBox.warning(self, QCoreApplication.translate("App","Warning"), QCoreApplication.translate("App","The machine configuration file name is not valid - creating default!"))
+        self.smallSmtMachine.saveCalibrationMachineData(self.fileNameCalibrationFile)
+        if self.machineConfigCB.findText(self.machineConfigCB.currentText()) == -1:
+            self.machineConfigCB.addItem(self.machineConfigCB.currentText())
+
+        if not self.smallSmtMachine.is_valid(self.fileNameGlobal):
+            QMessageBox.warning(self, QCoreApplication.translate("App", "Warning"), QCoreApplication.translate("App", "The machine global configuration file name is not valid - creating default!"))
+        self.smallSmtMachine.saveGlobalMachineData(self.fileNameGlobal)
+
 
 
     @pyqtSlot()
     def playground(self):
         configPlay = Playground(self.serial)
         configPlay.exec()
-
-
-    @pyqtSlot()
-    def selectConfig(self):
-        dlg = QFileDialog()
-        dlg.setNameFilters(["JSON files (*.json)","All files (*.*)"])
-        ok = dlg.exec()
-        if ok != 0 :
-            self.fnameLE.setText(dlg.selectedFiles().pop())
 
 
     @pyqtSlot()
@@ -334,6 +343,7 @@ def main():
     (options, args) = parser.parse_args(sys.argv)
 
     app = QApplication(sys.argv)
+    app.setApplicationName('smallsmt_openpnp_server')
     form = SmallSmtDriverApp()
     form.show()
     form.configure(options.machineType,options.machineConfig,options.machineSerialPort,options.machineStart)

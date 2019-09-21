@@ -33,13 +33,6 @@
       <item row="1" column="2">
        <widget class="QComboBox" name="comboBoxSerialPorts"/>
       </item>
-      <item row="0" column="2">
-       <widget class="QLineEdit" name="fnameLE">
-        <property name="text">
-         <string>vp-calibration.json</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="4">
        <widget class="QComboBox" name="machineTypesCB">
         <item>
@@ -71,17 +64,27 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="selectConfgiPB">
-        <property name="text">
-         <string>Select config file</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="refreshPortPB">
         <property name="text">
          <string>Refresh port</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Machine config</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="machineConfigCB">
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string notr="true">MyMachine</string>
         </property>
        </widget>
       </item>
@@ -174,7 +177,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>389</x>
-     <y>82</y>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
      <x>343</x>
@@ -227,22 +230,6 @@
     <hint type="destinationlabel">
      <x>199</x>
      <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>selectConfgiPB</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>selectConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>94</x>
-     <y>41</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>99</x>
-     <y>54</y>
     </hint>
    </hints>
   </connection>

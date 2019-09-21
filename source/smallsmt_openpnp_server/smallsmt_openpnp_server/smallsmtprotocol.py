@@ -79,6 +79,7 @@ class SmallSmtPacket:
         self.checksum = None
         self.checksum_calc = None
         self.bytes = None
+        self.view = None
         self.coordDelta = SmallSmtCoords()
 
     def preparePacket(self, identifier, data_type, databytes):
@@ -95,14 +96,14 @@ class SmallSmtPacket:
         # Message identifier
         self.bytes.append(self.identifier)
         # Data length - data bytes count(len) + message id(1) + data type(1)
-        if self.databytes != None:
+        if self.databytes is not None:
             self.bytes.append(len(self.databytes) + 1 + 1)
         else:
             self.bytes.append(1 + 1)
         # Data type
         self.bytes.append(self.data_type)
         # Data
-        if self.databytes != None:
+        if self.databytes is not None:
             self.bytes += self.databytes
         # Checksum
         self.checksum = self.checksumCalc(self.bytes, 1,len(self.bytes))
@@ -222,19 +223,19 @@ class SmallSmtCmd__Reset(SmallSmtPacket):
         if axes.find("Y") >= 0:
             databytes[2] = marker
             databytes[3] = marker
-        if axes.find("Z1")>= 0:
+        if axes.find("Z1") >= 0:
             databytes[4] = marker
             databytes[5] = marker
-        if axes.find("Z2")>= 0:
+        if axes.find("Z2") >= 0:
             databytes[6] = marker
             databytes[7] = marker
-        if axes.find("W1")>= 0:
+        if axes.find("W1") >= 0:
             databytes[8] = marker
             databytes[9] = marker
-        if axes.find("W2")>= 0:
+        if axes.find("W2") >= 0:
             databytes[10] = marker
             databytes[11] = marker
-        if axes.find("W3")>= 0:
+        if axes.find("W3") >= 0:
             databytes[12] = marker
             databytes[13] = marker
         self.view = [1,1,1,2,2,2,2,2,2,2,1,4]
@@ -429,8 +430,7 @@ class SmallSmtCmd__MultiMove(SmallSmtPacket):
         databytes+= self.convertRotation(stepsA4)
         databytes.append(startSpeedA4)
         databytes.append(runSpeedA4)
-        #databytes.append(returnEarly)
-        databytes.append(0x80)
+        databytes.append(returnEarly)
         self.view = [1,1,1,1, 4, 1, 1, 4, 1, 1, 2,1,1, 2,1,1, 2,1,1, 2,1,1,  1,1,4]
         self.preparePacket(self.IDENTIFIER_QUESTION, self.CMD_MULTI_MOVEMENT, databytes)
 
@@ -457,11 +457,11 @@ class SmallSmtCmd__FeederControl(SmallSmtPacket):
         databytes += self.convertSteps(steps)
         databytes.append(startSpeed)
         databytes.append(runSpeed)
-        databytes+= self.convertShort(openLength)
-        databytes+= self.convertShort(closedLength)
+        databytes += self.convertShort(openLength)
+        databytes += self.convertShort(closedLength)
         databytes.append(openCloseSpeedStart)
         databytes.append(openCloseSpeedRun)
-        databytes+= self.convertShort(feedTime)
+        databytes += self.convertShort(feedTime)
         databytes.append(pushCount)
         databytes.append(unknown)
         self.view = [1,1,1, 1,1, 4, 1, 1, 2,2, 1,1 , 2,1,1,1,4]
@@ -554,11 +554,6 @@ class SmallSmtCmd_Response(SmallSmtPacket):
         self.name = "RESPONSE"
         self.decodePacket(incoming_bytes)
 
-
-
-class SmallSmtProtocol:
-    def __init__(self):
-        pass
 
 
 
