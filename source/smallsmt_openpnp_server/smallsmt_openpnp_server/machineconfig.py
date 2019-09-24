@@ -5,7 +5,7 @@ class CoordInfo:
     def __init__(self):
         self.Cnv_PulseToMm_f8 = 1
         self.Min_f3 = 0
-        self.Max_f3 = 200.0
+        self.Max_f3 = 2000.0
 
 class MachineRange:
     def __init__(self):
@@ -14,20 +14,18 @@ class MachineRange:
         self.Y = CoordInfo()
 
         # Heads
-        self.Z1 = CoordInfo()
+        self.Z12 = CoordInfo()
+        self.Z34 = CoordInfo()
         self.C1 = CoordInfo()
-        self.Z2 = CoordInfo()
         self.C2 = CoordInfo()
-        self.Z3 = CoordInfo()
         self.C3 = CoordInfo()
-        self.Z4 = CoordInfo()
         self.C4 = CoordInfo()
 
         # Feeders
         self.F1W = CoordInfo()
         self.F2N = CoordInfo()
         self.F3E = CoordInfo()
-        self.F4S = CoordInfo()
+
 
 
 class FeedTemplate:

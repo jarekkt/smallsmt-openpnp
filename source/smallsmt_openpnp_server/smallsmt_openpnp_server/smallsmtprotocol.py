@@ -1,67 +1,6 @@
 from struct import *
-import binascii
-import math
 
 
-class SmallSmtCoords:
-    def add(self,delta):
-        if not math.isnan(delta.X):
-            self.X = self.X + delta.X
-        if not math.isnan(delta.Y):
-            self.Y = self.Y + delta.Y
-        if not math.isnan(delta.Z12):
-            self.Z12 = self.Z12 + delta.Z1
-        if not math.isnan(delta.Z34):
-            self.Z34 = self.Z34 + delta.Z34
-        if not math.isnan(delta.C1):
-            self.C1 = self.C1 + delta.C1
-        if not math.isnan(delta.C2):
-            self.C2 = self.C2 + delta.C2
-        if not math.isnan(delta.C3):
-            self.C3 = self.C3 + delta.C3
-        if not math.isnan(delta.C4):
-            self.C4 = self.C4 + delta.C4
-        if not math.isnan(delta.W1):
-            self.W1 = self.W1 + delta.W1
-        if not math.isnan(delta.W2):
-            self.W2 = self.W2 + delta.W2
-        if not math.isnan(delta.W3):
-            self.W3 = self.W3 + delta.W3
-
-    def __init__(self):
-        self.X = 0
-        self.Xsteps = 0
-        self.Xsteps_delta = 0
-        self.Y = 0
-        self.Ysteps = 0
-        self.Ysteps_delta = 0
-        self.Z12 = 0
-        self.Z12steps = 0
-        self.Z12steps_delta = 0
-        self.Z34 = 0
-        self.Z34steps = 0
-        self.Z34steps_delta = 0
-        self.C1 = 0
-        self.C1steps = 0
-        self.C1steps_delta = 0
-        self.C2 = 0
-        self.C2steps = 0
-        self.C2steps_delta = 0
-        self.C3 = 0
-        self.C3steps = 0
-        self.C3steps_delts = 0
-        self.C4 = 0
-        self.C4steps = 0
-        self.C4steps_delta = 0
-        self.W1 = 0
-        self.W1steps = 0
-        self.W1steps_delta = 0
-        self.W2 = 0
-        self.W2steps = 0
-        self.W2steps_delta = 0
-        self.W3 = 0
-        self.W4steps = 0
-        self.W4steps_delta = 0
 
 class SmallSmtPacket:
     # Base common packet definitions
@@ -80,7 +19,7 @@ class SmallSmtPacket:
         self.checksum_calc = None
         self.bytes = None
         self.view = None
-        self.coordDelta = SmallSmtCoords()
+
 
     def preparePacket(self, identifier, data_type, databytes):
         self.identifier = identifier

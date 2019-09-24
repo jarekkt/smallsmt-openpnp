@@ -1,28 +1,20 @@
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtCore import QObject,  QTimer, Qt
 import commsockets
+import openpnpcoords
 
 
 class OpenPnpMessanger(QObject):
     PROTOCOL_VERSION = "V1"
     status = 1
     value = 0
-    X = 0
-    Y = 0
-    Z1 = 0
-    C1 = 0
-    Z2 = 0
-    C2 = 0
-    Z3 = 0
-    C3 = 0
-    Z4 = 0
-    C4 = 0
 
     openPnpLogMessanger = pyqtSignal([str])
     openPnpRequest = pyqtSignal([str])
 
-    def __init__(self):
+    def __init__(self,coords):
         QObject.__init__(self)
+        self.coords = coords
         self.comm = commsockets.CommSockets()
         self.comm.getFromOpenPnp.connect(self.processRequest)
 
@@ -32,11 +24,11 @@ class OpenPnpMessanger(QObject):
     def executeResponse(self):
         response = str.format("[:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:]", \
                               self.PROTOCOL_VERSION, self.msgId, self.status, self.value, \
-                              self.X, self.Y, \
-                              self.Z1, self.C1, \
-                              self.Z2, self.C2, \
-                              self.Z3, self.C3, \
-                              self.Z4, self.C4)
+                              self.coords.X.value, self.coords.Y.value, \
+                              self.coords.Z12.value, self.coords.C1.value, \
+                              -self.coords.Z12.value, self.coords.C2.value, \
+                              self.coords.Z34.value, self.coords.C3.value, \
+                              -self.coords.Z34.value, self.coords.C4.value)
 
         self.comm.sendToOpenPnp(response)
         self.logInfo(str.format("Request response: {} ", response))

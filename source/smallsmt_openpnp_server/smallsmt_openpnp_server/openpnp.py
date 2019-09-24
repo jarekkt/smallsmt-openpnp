@@ -1,24 +1,34 @@
 from PyQt5.QtCore import pyqtSlot,pyqtSignal
 from PyQt5.QtCore import QObject,QEventLoop,QTimer,Qt
-import commsockets
+
 import smallsmtprotocol
 import smallsmtmessanger
 import openpnpmessanger
+import openpnpcoords
 
 
 class OpenPnp(QObject):
 
     openPnpLog = pyqtSignal([str])
 
-    def __init__(self,machine,serial):
+    def __init__(self,machineConfig,serial):
         QObject.__init__(self)
-        self.machine = machine
 
-        self.openpnp = openpnpmessanger.OpenPnpMessanger()
+        # Machine configuration
+        self.machineConfig = machineConfig
+
+        # Machine global coordinates
+        self.coords = openpnpcoords.OpenPnpCoords(self.machineConfig)
+
+        # Connection  to OpenPnp
+        self.openpnp = openpnpmessanger.OpenPnpMessanger(self.coords)
         self.openpnp.openPnpRequest.connect(self.executeRequestProlog)
 
+        # Connection to the SmallSmt machine
         self.smallsmt = smallsmtmessanger.SmallSmtMessanger(serial)
         self.smallsmt.messageDone.connect(self.executeRequestEpilog,Qt.QueuedConnection)
+
+
 
     def logInfo(self,logText):
         self.openPnpLog.emit(logText)
@@ -55,15 +65,19 @@ class OpenPnp(QObject):
         self.openpnp.executeResponse()
 
 
-
-
     def cmd__home(self):
-        pass
+        self.openPnpLog.emit("EXE: home")
+        self.smallsmt.prepare()
+        self.smallsmt.add({"tout": 30000, "packet": smallsmtprotocol.SmallSmtCmd__Reset("XYZ1Z2W1W2W3")})
+        self.smallsmt.send()
 
     def cmd__moveTo(self,command):
-        pass
+        cmd = openpnpcoords.OpenPnpCoordsSplitter(command)
+        cmd.toMove()
 
-    def cmd__setEnabled(self,command):
+
+
+
         pass
 
     def cmd__actuate(self,command):
@@ -77,9 +91,10 @@ class OpenPnp(QObject):
 
     def cmd__setEnabled(self,command):
 
-        self.openPnpLog.emit("Executing: setEnabled")
+        self.openPnpLog.emit("EXE: setEnabled")
         self.smallsmt.prepare()
         self.smallsmt.add({"tout": 1000, "packet": smallsmtprotocol.SmallSmtCmd__Online()})
+        self.smallsmt.add({"tout":  0, "packet": smallsmtprotocol.SmallSmtCmd__SmtMode(smallsmtprotocol.SmallSmtCmd__SmtMode.MODE_BEGIN)})
         self.smallsmt.send()
 
     def cmd__actuateRead(self,command):
