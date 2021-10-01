@@ -55,15 +55,18 @@ class SmallSmtMessanger(QObject):
 
     @pyqtSlot(bytearray)
     def sendLoop(self,in_bytes):
-        self.timer.stop()
-        # Preserve incoming packet
-        self.requests[self.self.requests_id]["result_bytes"] = in_bytes
-        self.self.requests_id = self.self.requests_id + 1
-        if self.self.requests_id < len(self.requests):
-            self.sendNextPacket()
-        else:
-            # All packages sent
-            self.messageDone.emit(True)
+        try:
+            self.timer.stop()
+            # Preserve incoming packet
+            self.requests[self.self.requests_id]["result_bytes"] = in_bytes
+            self.self.requests_id = self.self.requests_id + 1
+            if self.self.requests_id < len(self.requests):
+                self.sendNextPacket()
+            else:
+                # All packages sent
+                self.messageDone.emit(True)
+        except:
+            self.logInfo(str.format("sendLoop(): error sending data"))
 
     @pyqtSlot()
     def executeRequestTimeout(self):
