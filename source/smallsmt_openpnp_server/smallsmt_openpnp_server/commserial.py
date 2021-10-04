@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QObject,QIODevice,pyqtSignal,pyqtSlot,QTimer
 from PyQt5.QtSerialPort import QSerialPort
 import time
+import platform
 
 
 
@@ -30,7 +31,10 @@ class CommSerial(QObject):
             self.disable()
         try:
             result = False
-            system_port = '/dev/'+name
+            if platform.system() == 'Linux':
+                system_port = '/dev/' + name
+            else:
+                system_port = name
             self.qport = QSerialPort()
             self.qport.setPortName(system_port)
             self.qport.setBaudRate(QSerialPort.Baud115200)
